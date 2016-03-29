@@ -1,0 +1,16 @@
+Warning (10268): Verilog HDL information at I2C_Data_Reg.sv(19): always construct contains both blocking and non-blocking assignments
+Info (10281): Verilog HDL Declaration information at altera_merlin_burst_adapter_new.sv(139): object "BYTE_TO_WORD_SHIFT" differs only in case from object "byte_to_word_shift" in the same scope
+Info (10281): Verilog HDL Declaration information at altera_wrap_burst_converter.sv(279): object "addr_incr" differs only in case from object "ADDR_INCR" in the same scope
+Info (10281): Verilog HDL Declaration information at DE1_SOC_NIOS_2_mm_interconnect_0_router_005.sv(48): object "DEFAULT_WR_CHANNEL" differs only in case from object "default_wr_channel" in the same scope
+Info (10281): Verilog HDL Declaration information at DE1_SOC_NIOS_2_mm_interconnect_0_router_005.sv(49): object "DEFAULT_RD_CHANNEL" differs only in case from object "default_rd_channel" in the same scope
+Info (10281): Verilog HDL Declaration information at DE1_SOC_NIOS_2_mm_interconnect_0_router_004.sv(48): object "DEFAULT_WR_CHANNEL" differs only in case from object "default_wr_channel" in the same scope
+Info (10281): Verilog HDL Declaration information at DE1_SOC_NIOS_2_mm_interconnect_0_router_004.sv(49): object "DEFAULT_RD_CHANNEL" differs only in case from object "default_rd_channel" in the same scope
+Info (10281): Verilog HDL Declaration information at DE1_SOC_NIOS_2_mm_interconnect_0_router_003.sv(48): object "DEFAULT_WR_CHANNEL" differs only in case from object "default_wr_channel" in the same scope
+Info (10281): Verilog HDL Declaration information at DE1_SOC_NIOS_2_mm_interconnect_0_router_003.sv(49): object "DEFAULT_RD_CHANNEL" differs only in case from object "default_rd_channel" in the same scope
+Info (10281): Verilog HDL Declaration information at DE1_SOC_NIOS_2_mm_interconnect_0_router_002.sv(48): object "DEFAULT_WR_CHANNEL" differs only in case from object "default_wr_channel" in the same scope
+Info (10281): Verilog HDL Declaration information at DE1_SOC_NIOS_2_mm_interconnect_0_router_002.sv(49): object "DEFAULT_RD_CHANNEL" differs only in case from object "default_rd_channel" in the same scope
+Info (10281): Verilog HDL Declaration information at DE1_SOC_NIOS_2_mm_interconnect_0_router_001.sv(48): object "DEFAULT_WR_CHANNEL" differs only in case from object "default_wr_channel" in the same scope
+Info (10281): Verilog HDL Declaration information at DE1_SOC_NIOS_2_mm_interconnect_0_router_001.sv(49): object "DEFAULT_RD_CHANNEL" differs only in case from object "default_rd_channel" in the same scope
+Info (10281): Verilog HDL Declaration information at DE1_SOC_NIOS_2_mm_interconnect_0_router.sv(48): object "DEFAULT_WR_CHANNEL" differs only in case from object "default_wr_channel" in the same scope
+Info (10281): Verilog HDL Declaration information at DE1_SOC_NIOS_2_mm_interconnect_0_router.sv(49): object "DEFAULT_RD_CHANNEL" differs only in case from object "default_rd_channel" in the same scope
+Warning (10268): Verilog HDL information at TimeTouchI2CController.sv(52): always construct contains both blocking and non-blocking assignments

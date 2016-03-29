@@ -1,0 +1,36 @@
+
+//	int fileInSize = 0;
+//	int bitmapSize = 0;
+//	int bitmapPos = 0;
+//	int width = 0;
+//	int height = 0;
+//	int picIndex = 0;
+//	int i = 0;
+
+//	if (sdMount() != 0)
+//		while(1);
+//	if(sdOpen("PIP     ","BMP") != 0)
+//		while(1);
+//
+//
+//	if (sdBuffer[0] != 0x42 || sdBuffer[1] != 0x4D)
+//		printf("Invalid arg: only supports \"0x424D\" bitmap files\n");
+//	else{
+//		fileInSize = grabWord(sdBuffer, 2);
+//		bitmapPos  = grabWord(sdBuffer, 10);
+//		bitmapSize = fileInSize - bitmapPos;
+//		height	   = grabWord(sdBuffer, 22);
+//		width 	   = grabWord(sdBuffer, 18);
+//		if (grabWord(sdBuffer,30) != 3)
+//			printf("Error: only supports RGB565 compression\n");
+//		else{
+//			for(i=bitmapPos; i<bData._sectorSize; i+=2)
+//				IOWR_16DIRECT(NEW_SDRAM_CONTROLLER_0_BASE, (picIndex++)<<2 ,grabHalf(sdBuffer, i));
+//
+//			while (sdReadNext() == 0){
+//				for(i=0; i<bData._sectorSize; i+=2)
+//					IOWR_16DIRECT(NEW_SDRAM_CONTROLLER_0_BASE, (picIndex++)<<2 ,grabHalf(sdBuffer, i));
+//			}
+//		}
+//	}
+
