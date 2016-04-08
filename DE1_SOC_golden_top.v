@@ -171,15 +171,7 @@ module de1_soc_golden_top(
 //=======================================================
 
 
-wire clk;
-wire ready;
-wire valid;
-wire [15:0] pixel;
-//wire [15:0] color[2] = '{16'hF800, 16'h07E0};
-wire frame_sync;
 
-wire clock_6400k;
-wire clk_1600K;
 
 wire dataReady;
 wire busy;
@@ -193,21 +185,13 @@ wire validDATAREG;
 
 wire [63:0] dataRegBus; 
 
-assign GPIO_1[2] = 1'bz;
+//assign GPIO_1[2] = 1'bz;
 
 //=======================================================
 //  Structural coding
 //=======================================================
     DE1_SOC_NIOS_2 u0 (
         .clk_clk                                               (CLOCK_50),             //                         clk.clk
-        .clock_23m_clk                                         (clk),                  //                   clock_23m.clk
-        .clock_6400k_clk                                       (clock_6400k),                     //                 clock_6400k.clk
-        
-			.pixel_readdata                        (pixel),                        				//                       pixel.data
-			.pixel_ready                       		(ready),                       					//                            .ready
-			.pixel_valid                       		(valid),                       					//                            .valid
-			.pixel_read_clk                          (clk),
-			.pixel_frame_sync                  		(frame_sync),
 		  
 		  .new_sdram_controller_0_wire_addr                      (DRAM_ADDR),            //                     new_sdram_controller_0_wire.addr
         .new_sdram_controller_0_wire_ba                        (DRAM_BA),              //                                                .ba
@@ -222,8 +206,7 @@ assign GPIO_1[2] = 1'bz;
 		  .reset_reset_n                                         (1'b1),                 //                                           reset.reset_n
 		  .sdram_clk_clk                                         (DRAM_CLK),   				//                                       sdram_clk.clk
 		  
-//		  .i2c_data_valid                    							(validDATAREG),         //                    i2c_data.valid
-//        .i2c_data_data                     							(dataRegBus),
+
 		  .sd_sd_cs                          (GPIO_1[0]),                          	//                          sd.sd_cs
         .sd_sd_di                          (GPIO_1[1]),                          		//  
 		  .sd_sd_clk                         (GPIO_1[2]),                         		//                            .sd_clk
@@ -231,76 +214,34 @@ assign GPIO_1[2] = 1'bz;
 		  
 		  .i2c_rst                           (GPIO_1[32]),                           //                         i2c.rst
         .i2c_sda                           (GPIO_1[35]),                           //                            .sda
-        .i2c_sclk                          (GPIO_1[34])                          //                            .sclk
+        .i2c_sclk                          (GPIO_1[34]),                         //                            .sclk
+		  
+		  .lcd_lcd_cs                        (GPIO_0[27]),                        //                         lcd.lcd_cs
+        .lcd_lcd_data                      (GPIO_0[23:0]),                      //                            .lcd_data
+        .lcd_lcd_dc                        (GPIO_0[26]),                        //                            .lcd_dc
+        .lcd_lcd_rst                       (GPIO_0[28]),                       //                            .lcd_rst
+        .lcd_lcd_wr                        (GPIO_0[25])                         //                            .lcd_wr
 	 );
+
 	 
 
-	assign GPIO_0[24] = 1'b1;
-	LCDController lcdCon (
-		.clk(clk),
-		.rst(1'b1),
-		
-		.dataIn(pixel),
-		.valid(valid),
-		.ready(ready),
-		
-		.wr(GPIO_0[25]),
-		.cs(GPIO_0[27]),
-		.dc(GPIO_0[26]),
-		.rstOut(GPIO_0[28]),
-		.dataOut(GPIO_0[23:0]),
-		.frame_sync(frame_sync)
-	);
-	
-//	framebuffer_arbiter a1();
-	
-//	clkDiv u1 (
-//			.clkIn(clock_6400k),
-//			.clkOut(clk_1600K)
+//	assign GPIO_0[24] = 1'b1;
+//	LCDController lcdCon (
+//		.clk(clk),
+//		.rst(1'b1),
+//		
+//		.dataIn(pixel),
+//		.valid(valid),
+//		.ready(ready),
+//		
+//		.wr(GPIO_0[25]),
+//		.cs(GPIO_0[27]),
+//		.dc(GPIO_0[26]),
+//		.rstOut(GPIO_0[28]),
+//		.dataOut(GPIO_0[23:0]),
+//		.frame_sync(frame_sync)
 //	);
 	 
-//	 TouchI2CController t0(
-//		.clk(clk_1600K),
-//		.en(!GPIO_1[2]),
-//		.reset(1),
-//		.busy(busy),
-//		.enI2C(enI2C), 
-//		.rw(rw),
-//		.data(data),
-//		.address(address),
-//		.load(load),
-//		.valid(validDATAREG),
-//		.resetTouch(GPIO_1[3])
-//	);
-	 
-//	 i2cModule i0(
-////		.clk(clk_1600K),	
-////		.en(enI2C), 
-////		//.rw(rw),
-////		//.addressBits(address),
-////		.data(data),
-////		.readData(readData),
-////		//.busy(busy),
-////		.sda(GPIO_1[0]), 
-////		.scl(GPIO_1[1])
-//	);
-	
-//.clk(CLOCK_50), 
-//.reset(1'b1),
-//.din(),
-//.wr(),
-//
-//.sdat(GPIO_1[0]),
-//.sclk(GPIO_1[1]), 
-//.idle(), 
-//.fail(), 
-//.done()
-	
-//	I2C_REG_Hold REG_H(
-//		.clk 			(clk_1600K),
-//		.load			(load),
-//		.dataIn  	(readData),
-//		.dataOut 	(dataRegBus)
-//	);
+
 
 endmodule

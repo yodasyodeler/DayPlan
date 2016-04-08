@@ -5,30 +5,27 @@ preplace inst DE1_SOC_NIOS_2.clk_0 -pg 1 -lvl 1 -y 200
 preplace inst DE1_SOC_NIOS_2 -pg 1 -lvl 1 -y 40 -regy -20
 preplace inst DE1_SOC_NIOS_2.onchip_memory2 -pg 1 -lvl 4 -y 30
 preplace inst DE1_SOC_NIOS_2.cpu.clock_bridge -pg 1
+preplace inst DE1_SOC_NIOS_2.timer_0 -pg 1 -lvl 5 -y 140
 preplace inst DE1_SOC_NIOS_2.cpu -pg 1 -lvl 3 -y 70
-preplace inst DE1_SOC_NIOS_2.pll_I2C -pg 1 -lvl 4 -y 210
 preplace inst DE1_SOC_NIOS_2.cpu.reset_bridge -pg 1
+preplace inst DE1_SOC_NIOS_2.dma_0 -pg 1 -lvl 5 -y 40
 preplace inst DE1_SOC_NIOS_2.pll -pg 1 -lvl 2 -y 200
 preplace inst DE1_SOC_NIOS_2.new_sdram_controller_0 -pg 1 -lvl 5 -y 380
 preplace inst DE1_SOC_NIOS_2.cpu.cpu -pg 1
 preplace inst DE1_SOC_NIOS_2.i2c_AVALON_0 -pg 1 -lvl 4 -y 680
-preplace inst DE1_SOC_NIOS_2.I2C_Data_Reg_0 -pg 1 -lvl 4 -y 480
-preplace inst DE1_SOC_NIOS_2.framebuffer_sdram_0 -pg 1 -lvl 4 -y 360
+preplace inst DE1_SOC_NIOS_2.LCDFrameBuffer_0 -pg 1 -lvl 4 -y 270
 preplace inst DE1_SOC_NIOS_2.jtag_uart -pg 1 -lvl 4 -y 110
-preplace netloc EXPORT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)I2C_Data_Reg_0.conduit_end,(SLAVE)DE1_SOC_NIOS_2.i2c_data) 1 0 4 NJ 510 NJ 510 NJ 510 NJ
-preplace netloc EXPORT<net_container>DE1_SOC_NIOS_2</net_container>(MASTER)pll_I2C.outclk0,(MASTER)DE1_SOC_NIOS_2.clock_6400k) 1 4 2 NJ 220 NJ
-preplace netloc EXPORT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)clk_0.clk_in_reset,(SLAVE)DE1_SOC_NIOS_2.reset) 1 0 1 NJ
-preplace netloc INTERCONNECT<net_container>DE1_SOC_NIOS_2</net_container>(MASTER)framebuffer_sdram_0.avalon_master,(MASTER)cpu.data_master,(MASTER)cpu.instruction_master,(SLAVE)i2c_AVALON_0.i2c,(SLAVE)framebuffer_sdram_0.s0,(SLAVE)new_sdram_controller_0.s1,(SLAVE)I2C_Data_Reg_0.s0,(SLAVE)cpu.debug_mem_slave,(SLAVE)SPI_AVALON_SD_0.sd,(SLAVE)jtag_uart.avalon_jtag_slave,(SLAVE)onchip_memory2.s1) 1 2 3 650 210 1010 470 1310
-preplace netloc FAN_OUT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)I2C_Data_Reg_0.rst,(SLAVE)onchip_memory2.reset1,(SLAVE)pll_I2C.reset,(SLAVE)cpu.reset,(SLAVE)SPI_AVALON_SD_0.reset,(SLAVE)framebuffer_sdram_0.rst,(SLAVE)jtag_uart.reset,(SLAVE)new_sdram_controller_0.reset,(SLAVE)pll.reset,(MASTER)clk_0.clk_reset,(SLAVE)i2c_AVALON_0.reset) 1 1 4 410 190 630 250 1070 350 1330
-preplace netloc POINT_TO_POINT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)jtag_uart.irq,(MASTER)cpu.irq) 1 3 1 N
-preplace netloc EXPORT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)framebuffer_sdram_0.export,(SLAVE)DE1_SOC_NIOS_2.pixel) 1 0 4 NJ 390 NJ 390 NJ 390 NJ
-preplace netloc EXPORT<net_container>DE1_SOC_NIOS_2</net_container>(MASTER)DE1_SOC_NIOS_2.sdram_clk,(MASTER)pll.outclk1) 1 2 4 NJ 310 NJ 300 NJ 300 NJ
-preplace netloc EXPORT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)DE1_SOC_NIOS_2.sd,(SLAVE)SPI_AVALON_SD_0.conduit_end) 1 0 4 NJ 610 NJ 610 NJ 610 NJ
+preplace netloc EXPORT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)new_sdram_controller_0.wire,(SLAVE)DE1_SOC_NIOS_2.new_sdram_controller_0_wire) 1 0 5 NJ 460 NJ 460 NJ 460 NJ 460 NJ
+preplace netloc FAN_OUT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)timer_0.reset,(SLAVE)jtag_uart.reset,(SLAVE)pll.reset,(SLAVE)SPI_AVALON_SD_0.reset,(SLAVE)new_sdram_controller_0.reset,(SLAVE)LCDFrameBuffer_0.rst,(SLAVE)dma_0.reset,(SLAVE)i2c_AVALON_0.reset,(MASTER)clk_0.clk_reset,(SLAVE)cpu.reset,(SLAVE)onchip_memory2.reset1) 1 1 4 410 190 630 230 1070 380 1390
+preplace netloc EXPORT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)SPI_AVALON_SD_0.conduit_end,(SLAVE)DE1_SOC_NIOS_2.sd) 1 0 4 NJ 610 NJ 610 NJ 610 NJ
+preplace netloc EXPORT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)DE1_SOC_NIOS_2.reset,(SLAVE)clk_0.clk_in_reset) 1 0 1 NJ
+preplace netloc EXPORT<net_container>DE1_SOC_NIOS_2</net_container>(MASTER)DE1_SOC_NIOS_2.sdram_clk,(MASTER)pll.outclk1) 1 2 4 NJ 290 NJ 240 NJ 250 NJ
+preplace netloc EXPORT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)LCDFrameBuffer_0.External,(SLAVE)DE1_SOC_NIOS_2.lcd) 1 0 4 NJ 310 NJ 310 NJ 310 NJ
 preplace netloc EXPORT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)i2c_AVALON_0.conduit_end,(SLAVE)DE1_SOC_NIOS_2.i2c) 1 0 4 NJ 710 NJ 710 NJ 710 NJ
-preplace netloc EXPORT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)clk_0.clk_in,(SLAVE)DE1_SOC_NIOS_2.clk) 1 0 1 NJ
-preplace netloc FAN_OUT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)I2C_Data_Reg_0.clock,(SLAVE)onchip_memory2.clk1,(SLAVE)i2c_AVALON_0.clock,(SLAVE)new_sdram_controller_0.clk,(MASTER)pll.outclk0,(SLAVE)cpu.clk,(SLAVE)framebuffer_sdram_0.clock,(SLAVE)jtag_uart.clk,(SLAVE)SPI_AVALON_SD_0.clock) 1 2 3 610 230 1030 330 1370
-preplace netloc EXPORT<net_container>DE1_SOC_NIOS_2</net_container>(MASTER)pll_I2C.outclk1,(MASTER)DE1_SOC_NIOS_2.clock_23m) 1 4 2 NJ 270 NJ
-preplace netloc FAN_OUT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)pll_I2C.refclk,(SLAVE)pll.refclk,(MASTER)clk_0.clk) 1 1 3 390 170 NJ 270 1050
-preplace netloc EXPORT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)DE1_SOC_NIOS_2.new_sdram_controller_0_wire,(SLAVE)new_sdram_controller_0.wire) 1 0 5 NJ 290 NJ 290 NJ 290 NJ 280 NJ
-levelinfo -pg 1 0 180 1670
-levelinfo -hier DE1_SOC_NIOS_2 190 220 440 770 1150 1440 1570
+preplace netloc EXPORT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)DE1_SOC_NIOS_2.clk,(SLAVE)clk_0.clk_in) 1 0 1 NJ
+preplace netloc FAN_OUT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)onchip_memory2.clk1,(SLAVE)cpu.clk,(SLAVE)SPI_AVALON_SD_0.clock,(MASTER)pll.outclk0,(SLAVE)i2c_AVALON_0.clock,(SLAVE)jtag_uart.clk,(SLAVE)new_sdram_controller_0.clk) 1 2 3 610 270 1030 480 1410
+preplace netloc FAN_OUT<net_container>DE1_SOC_NIOS_2</net_container>(MASTER)clk_0.clk,(SLAVE)pll.refclk,(SLAVE)timer_0.clk,(SLAVE)dma_0.clk,(SLAVE)LCDFrameBuffer_0.clock) 1 1 4 390 170 NJ 250 1050 260 1310
+preplace netloc FAN_OUT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)jtag_uart.irq,(MASTER)cpu.irq,(SLAVE)dma_0.irq,(SLAVE)timer_0.irq) 1 3 2 1110 220 1330
+preplace netloc INTERCONNECT<net_container>DE1_SOC_NIOS_2</net_container>(SLAVE)timer_0.s1,(MASTER)cpu.data_master,(SLAVE)i2c_AVALON_0.i2c,(MASTER)dma_0.write_master,(MASTER)dma_0.read_master,(MASTER)cpu.instruction_master,(SLAVE)onchip_memory2.s1,(SLAVE)cpu.debug_mem_slave,(SLAVE)dma_0.control_port_slave,(SLAVE)SPI_AVALON_SD_0.sd,(SLAVE)jtag_uart.avalon_jtag_slave,(MASTER)LCDFrameBuffer_0.avalon_master,(SLAVE)LCDFrameBuffer_0.s0,(SLAVE)new_sdram_controller_0.s1) 1 2 4 650 210 1010 400 1350 30 1720
+levelinfo -pg 1 0 180 1830
+levelinfo -hier DE1_SOC_NIOS_2 190 220 440 770 1150 1500 1740

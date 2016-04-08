@@ -1,0 +1,23 @@
+#include "calendar.h"
+
+static uint8_t daysInMonth[2][13] = {
+		{0,31,28,31,30,31,30,31,31,30,31,30,31},
+		{0,31,29,31,30,31,30,31,31,30,31,30,31}
+};
+
+int displayCal(uint8_t day, uint8_t month, uint16_t year, uint8_t frame)
+{
+	if (month < 1 || month > 12)
+		return -1;
+
+	if (day < 1 || day > daysInMonth[month])
+		return -2;
+
+	/* doesn't support old Calendar */
+	if (year < 1753 || year > 9999)
+		return -3;
+
+
+	return 0;
+}
+

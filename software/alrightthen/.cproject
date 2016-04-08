@@ -17,13 +17,13 @@
 							</builder>
 							<tool id="altera.tool.gnu.c.compiler.mingw.1032460650" name="Nios II GCC C Compiler" superClass="altera.tool.gnu.c.compiler.mingw">
 								<option id="gnu.c.compiler.option.include.paths.1716466042" name="Include paths (-I)" superClass="gnu.c.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="C:/Users/cory_/Documents/quartus/projects/Its_Working_DE1/Its_Working_DE1/software"/>
+									<listOptionValue builtIn="false" value="C:/Users/cory_/Source/Repos/DayPlan/software/alrightthen"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.410363477" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
 							</tool>
 							<tool id="altera.tool.gnu.cpp.compiler.mingw.1806395923" name="Nios II GCC C++ Compiler" superClass="altera.tool.gnu.cpp.compiler.mingw">
 								<option id="gnu.cpp.compiler.option.include.paths.1278056490" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
-									<listOptionValue builtIn="false" value="C:/Users/cory_/Documents/quartus/projects/Its_Working_DE1/Its_Working_DE1/software"/>
+									<listOptionValue builtIn="false" value="C:/Users/cory_/Source/Repos/DayPlan/software/alrightthen"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.cpp.compiler.input.1350630452" superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input"/>
 							</tool>
@@ -31,14 +31,14 @@
 							<tool id="altera.tool.gnu.c.linker.mingw.1097521411" name="Nios II GCC C Linker" superClass="altera.tool.gnu.c.linker.mingw"/>
 							<tool id="altera.tool.gnu.assembler.mingw.721512921" name="Nios II GCC Assembler" superClass="altera.tool.gnu.assembler.mingw">
 								<option id="gnu.both.asm.option.include.paths.903353562" name="Include paths (-I)" superClass="gnu.both.asm.option.include.paths" valueType="includePath">
-									<listOptionValue builtIn="false" value="C:/Users/cory_/Documents/quartus/projects/Its_Working_DE1/Its_Working_DE1/software"/>
+									<listOptionValue builtIn="false" value="C:/Users/cory_/Source/Repos/DayPlan/software/alrightthen"/>
 								</option>
 								<inputType id="cdt.managedbuild.tool.gnu.assembler.input.111361917" superClass="cdt.managedbuild.tool.gnu.assembler.input"/>
 							</tool>
 						</toolChain>
 					</folderInfo>
 					<sourceEntries>
-						<entry excluding="src" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
+						<entry excluding="src|source" flags="VALUE_WORKSPACE_PATH|RESOLVED" kind="sourcePath" name=""/>
 					</sourceEntries>
 				</configuration>
 			</storageModule>

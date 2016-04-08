@@ -818,19 +818,6 @@
 												<key shared="false">
 													<placeholder>dock.single.Messages</placeholder>
 												</key>
-												<item key="convert" type="b">true</item>
-												<item key="convert-keys" type="a">
-													<item type="s">size</item>
-													<item type="s">index</item>
-													<item type="s">id</item>
-													<item type="s">placeholder</item>
-													<item type="s">hold</item>
-												</item>
-												<item key="dock.size" type="i">400</item>
-												<item key="dock.index" type="i">0</item>
-												<item key="dock.id" type="i">0</item>
-												<item key="dock.placeholder" type="s">dock.single.Messages</item>
-												<item key="dock.hold" type="b">false</item>
 											</entry>
 										</placeholders>
 									</content>
@@ -841,18 +828,7 @@
 									<type>dock.CContentArea.minimize</type>
 								</layout>
 							</adjacent>
-							<children ignore="false">
-								<child>
-									<layout factory="predefined" placeholder="dock.single.Messages">
-										<replacement id="dockablesingle Messages"/>
-										<delegate id="delegate_ccontrol backup factory id">
-											<id>Messages</id>
-											<area/>
-										</delegate>
-									</layout>
-									<children ignore="false"/>
-								</child>
-							</children>
+							<children ignore="false"/>
 						</root>
 						<root name="ccontrol east">
 							<layout factory="predefined">
@@ -885,7 +861,7 @@
 										<fullscreen-action>false</fullscreen-action>
 										<node nodeId="1372710005721" orientation="HORIZONTAL" divider="0.22585227272727273">
 											<node nodeId="1375985011088" orientation="VERTICAL" divider="0.504054054054054">
-												<leaf id="2" nodeId="1375985003630">
+												<leaf id="4" nodeId="1375985003630">
 													<placeholders>
 														<placeholder>dock.single.Clock\ Domains\ \-\ Beta</placeholder>
 														<placeholder>dock.single.IP\ Catalog</placeholder>
@@ -911,7 +887,7 @@
 														</entry>
 													</placeholder-map>
 												</leaf>
-												<leaf id="0" nodeId="1375985011087">
+												<leaf id="1" nodeId="1375985011087">
 													<placeholders>
 														<placeholder>dock.single.Hierarchy</placeholder>
 													</placeholders>
@@ -936,7 +912,7 @@
 												</leaf>
 											</node>
 											<node nodeId="1372710005725" orientation="VERTICAL" divider="0.8257080610021786">
-												<node nodeId="1372710005727" orientation="HORIZONTAL" divider="0.772872035595392">
+												<node nodeId="1372710005727" orientation="HORIZONTAL" divider="0.7247611685951252">
 													<node nodeId="1372710005733" orientation="VERTICAL" divider="0.75">
 														<leaf id="3" nodeId="1372710005735">
 															<placeholders>
@@ -991,7 +967,7 @@
 														</leaf>
 													</node>
 													<node nodeId="1389812802503" orientation="VERTICAL" divider="0.6704331450094162">
-														<leaf id="1" nodeId="1389812800464">
+														<leaf id="2" nodeId="1389812800464">
 															<placeholders>
 																<placeholder>dock.single.Details</placeholder>
 																<placeholder>dock.single.Parameters</placeholder>
@@ -1034,7 +1010,7 @@
 														</leaf>
 													</node>
 												</node>
-												<leaf id="-1" nodeId="1372710005745">
+												<leaf id="0" nodeId="1372710005745">
 													<placeholders>
 														<placeholder>dock.single.Messages</placeholder>
 														<placeholder>dock.single.Generation\ Messages</placeholder>
@@ -1065,6 +1041,16 @@
 								</layout>
 							</adjacent>
 							<children ignore="false">
+								<child>
+									<layout factory="predefined" placeholder="dock.single.Messages">
+										<replacement id="dockablesingle Messages"/>
+										<delegate id="delegate_ccontrol backup factory id">
+											<id>Messages</id>
+											<area/>
+										</delegate>
+									</layout>
+									<children ignore="false"/>
+								</child>
 								<child>
 									<layout factory="delegate_StackDockStationFactory">
 										<selected>0</selected>
@@ -1194,16 +1180,6 @@
 									</children>
 								</child>
 								<child>
-									<layout factory="predefined" placeholder="dock.single.IP\ Catalog">
-										<replacement id="dockablesingle IP Catalog"/>
-										<delegate id="delegate_ccontrol backup factory id">
-											<id>IP Catalog</id>
-											<area/>
-										</delegate>
-									</layout>
-									<children ignore="false"/>
-								</child>
-								<child>
 									<layout factory="delegate_StackDockStationFactory">
 										<selected>0</selected>
 										<placeholders>
@@ -1310,6 +1286,16 @@
 											<children ignore="false"/>
 										</child>
 									</children>
+								</child>
+								<child>
+									<layout factory="predefined" placeholder="dock.single.IP\ Catalog">
+										<replacement id="dockablesingle IP Catalog"/>
+										<delegate id="delegate_ccontrol backup factory id">
+											<id>IP Catalog</id>
+											<area/>
+										</delegate>
+									</layout>
+									<children ignore="false"/>
 								</child>
 							</children>
 						</root>
@@ -1782,10 +1768,10 @@
 								</property>
 							</properties>
 						</entry>
-						<entry id="single Messages" current="dock.mode.minimized">
+						<entry id="single Messages" current="dock.mode.normal">
 							<history>
-								<mode>dock.mode.normal</mode>
 								<mode>dock.mode.minimized</mode>
+								<mode>dock.mode.normal</mode>
 							</history>
 							<properties>
 								<property id="dock.mode.minimized">
@@ -1794,7 +1780,7 @@
 									<location>
 										<property factory="flap dock">
 											<index>0</index>
-											<holding>false</holding>
+											<holding>true</holding>
 											<size>400</size>
 											<placeholder>dock.single.Messages</placeholder>
 										</property>
@@ -1807,7 +1793,7 @@
 										<property factory="SplitDockPlaceholderProperty">
 											<placeholder>dock.single.Messages</placeholder>
 											<backup-path>
-												<node location="RIGHT" size="0.7781885397412199" id="1372710005721"/>
+												<node location="RIGHT" size="0.7741477272727273" id="1372710005721"/>
 												<node location="BOTTOM" size="0.17429193899782136" id="1372710005725"/>
 												<leaf id="1372710005745"/>
 											</backup-path>

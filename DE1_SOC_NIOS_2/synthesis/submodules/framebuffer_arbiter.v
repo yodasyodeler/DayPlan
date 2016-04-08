@@ -4,55 +4,42 @@ module framebuffer_arbiter (
    input  wire        	rst,              
 
 // Memory-Mapped Master interface -- To SDRAM Controller
-   input  wire          	m0_waitrequest,   
-   input  wire          	m0_readdatavalid, 
-	input  wire [15:0]   	m0_readdata,
-		
-	output reg  [25:0] 		m0_address,
-	output reg        		m0_read_n,
-	output wire		 			m0_write_n,
-	output wire [15:0] 		m0_writedata,
-	output wire 				m0_chipselect,
-	output wire [1:0]			m0_byteenable_n,
-
-// Memory-Mapped Slave interface -- Base Addresses
-	input  wire   				s0_address,       
-	input  wire        		s0_read,          
-	input  wire        		s0_write,         
-	input  wire [31:0] 		s0_writedata,     //New 	BaseAddress
-	output reg  [31:0] 		s0_readdata,      //Current BaseAddress
+	input  wire          	fb0_waitrequest,   
+	input  wire          	fb0_readdatavalid, 
+	input  wire [15:0]   	fb0_readdata,
 	
-    /* FIFO Out Export*/
-	input  wire        		export_read_clk,
-	input  wire 				export_frame_sync,
-	input  wire        		export_as0_ready,  
-	output wire        		export_as0_valid,   	
-	output wire [15:0] 		export_as0_readdata 
+	output reg  [25:0] 		fb0_address,
+	output reg        		fb0_read_n,
+	output wire		 			fb0_write_n,
+	output wire [15:0] 		fb0_writedata,
+	output wire 				fb0_chipselect,
+	output wire [1:0]			fb0_byteenable_n,
+
+// Memory-Mapped Slave interface -- Base Addresses                
+	input  wire        		fb1_write,         
+	input  wire [31:0] 		fb1_writedata,     //New 	BaseAddress
+	output wire [31:0] 		fb1_readdata,      //Current BaseAddress
+	
+    /* FIFO Out Export */
+	input  wire 				frame_sync,
+	input  wire        		ready,  
+	output wire        		valid,   	
+	output wire [15:0] 		readdata 			
 );
 
 	localparam BURSTLENGTH	= 6'd32;
 	
-	localparam 		IDLE = 0, 
-						READ = 1,
-						READ_DONE = 2; 
+	localparam 	IDLE = 0, 
+					READ = 1,
+					READ_DONE = 2; 
 						
-	assign m0_chipselect			= !m0_read_n;
-	assign m0_byteenable_n		= 2'b00;
-	assign m0_write_n				= 1'b1;
-	assign m0_writedata			= 0;
+	assign fb0_chipselect		= !fb0_read_n;
+	assign fb0_byteenable_n		= 2'b00;
+	assign fb0_write_n			= 1'b1;
+	assign fb0_writedata			= 0;
 	
-	
-	reg  [1:0] shiftValid;
-	always @ (negedge export_read_clk) begin
-		shiftValid[1] <= shiftValid[0]; 
-		shiftValid[0] <= !rdfifo_rdempty;
-	end
-	
-	
-	assign export_as0_valid = shiftValid[1];
 	
 	reg [1:0]	current_state, next_state;
-
 
 	reg [5:0]	burst_count;
 	reg [5:0]	read_count;
@@ -64,51 +51,47 @@ module framebuffer_arbiter (
 	reg [25:0] 	newReadAddress;
 	reg [25:0]  read_offset;
  
+ 	reg  [1:0] shiftValid;
+	always @ (negedge clk) begin
+		shiftValid[1] <= shiftValid[0]; 
+		shiftValid[0] <= !rdfifo_rdempty;
+	end
+	
+	
+	assign valid = shiftValid[1];
 	
  //Instantiate Dual Clock FIFO| Read
-	sdram_read_fifo  dcfifo_Read (
-		.aclr 	(rst | softRst),
-		.data 	(m0_readdata),
-		.rdclk 	(!export_read_clk),
-		.rdreq 	((export_as0_ready & shiftValid[0])),
-		.wrclk 	(clk),
-		.wrreq 	(m0_readdatavalid),
-		.q 		(export_as0_readdata),
-		.wrusedw (rdfifo_wrusedw),
-		.rdempty (rdfifo_rdempty)
+	sdram_read_fifo  scfifo_Read (
+		.clock(clk),
+		.aclr((rst | frame_sync)),
+		.data(fb0_readdata),
+		.rdreq((ready & shiftValid[0])),
+		.wrreq(fb0_readdatavalid),
+		.q(readdata),
+		.usedw(rdfifo_wrusedw),
+		.empty(rdfifo_rdempty)
 	);
+	
 	
 	
 //--------------------for Changing the Starting Address-------------------
 	/*Write Operation*/
 	always @(negedge clk) begin						
-		if(rst) begin								
-				newReadAddress				<= 0;
-		end
-		else if (s0_write) begin
-			case(s0_address)
-				1'b0 : 		newReadAddress 		<= s0_writedata[25:0];	
-				default : 	newReadAddress 		<= newReadAddress;				
-			endcase
-		end
+		if(rst)								
+			newReadAddress	<= 0;
+		else if (fb1_write)
+			newReadAddress <= fb1_writedata[25:0];	
+		else
+			newReadAddress <= newReadAddress;
 	end
+	
 	/*Read  Operation*/
-	always @ (*) begin										// Read operations 
-		if(s0_read) begin
-			case(s0_address)
-				1'b0 : 		s0_readdata 	= read_Base_Addr; 
-				default : 	s0_readdata 	= 0;
-			endcase
-		end 
-		else begin
-			s0_readdata 		= 0;
-		end
-	end
+	assign fb1_readdata 	= read_Base_Addr; 
 //------------------------------------------------------------------------
 
 	/*State Transistion*/
-	always @(negedge clk ) begin
-		  if(rst | softRst)
+	always @(negedge clk) begin
+		  if(rst | frame_sync)
 				current_state <= IDLE;
 		  else
 				current_state <= next_state;
@@ -117,34 +100,34 @@ module framebuffer_arbiter (
 	
 	/*Count & Offsets*/
 	always @(posedge clk ) begin
-		if(rst | softRst) begin
-			read_count					<= 0;
-			burst_count					<= 0;
-			read_offset					<= 0;
-			read_Base_Addr				<= newReadAddress;
+		if(rst | frame_sync) begin
+			read_count				<= 0;
+			burst_count				<= 0;
+			read_offset				<= 0;
+			read_Base_Addr			<= newReadAddress;
 		end 
 		else begin
-			read_count					<= read_count;
-			burst_count 				<= burst_count;
-			read_offset					<= read_offset;
-			read_Base_Addr				<= read_Base_Addr;
+			read_count				<= read_count;
+			burst_count 			<= burst_count;
+			read_offset				<= read_offset;
+			read_Base_Addr			<= read_Base_Addr;
 			case(current_state)
 				IDLE: begin
-					read_count				<= 0;
-					burst_count				<= 0;
+					read_count			<= 0;
+					burst_count			<= 0;
 					if (!read_Base_Addr[0]) begin
-						read_Base_Addr 		<= newReadAddress;
-						read_offset				<= 0;
+						read_Base_Addr 	<= newReadAddress;
+						read_offset			<= 0;
 					end
 				end
 				READ : begin
-					if (m0_readdatavalid)
+					if (fb0_readdatavalid)
 						read_count				<= read_count + 1'b1;
-					if ((!m0_read_n) & (!m0_waitrequest))
+					if ((!fb0_read_n) & (!fb0_waitrequest))
 						burst_count 			<= burst_count + 1'b1;
 				end
 				READ_DONE : begin
-					read_offset				<= read_offset + (BURSTLENGTH<<1);
+					read_offset				<= read_offset + (BURSTLENGTH<<2);	//16 bit accesses
 				end
 			endcase
 		 end
@@ -152,38 +135,24 @@ module framebuffer_arbiter (
     
 	/*State Transition & Data*/
 	always @ (*) begin									
-		m0_address 				= {read_Base_Addr[25:1],1'b0} + read_offset + {(burst_count),1'b0};
-		
-		m0_read_n					= 1'b1;		
-		
-		next_state 					= current_state;
+		fb0_address 				= {read_Base_Addr[25:1],1'b0} + read_offset + {(burst_count),2'b0};
+		fb0_read_n				= 1'b1;		
+		next_state 				= current_state;
 		case(current_state)
 			IDLE : begin	
 				if((rdfifo_wrusedw[5] == 1'b0 ) & read_Base_Addr[0])										// Half Full Read
-					next_state 				= READ;
+					next_state 		= READ;
 			end
 			READ : begin 			
 				if ( burst_count < BURSTLENGTH ) begin
-					m0_read_n						= 1'b0;
+					fb0_read_n			= 1'b0;
 				end
 				if ( read_count >= (BURSTLENGTH))
-					next_state 					= READ_DONE;
+					next_state 		= READ_DONE;
 			end
 			READ_DONE: begin
-				next_state  					= IDLE;
+				next_state  		= IDLE;
 			end
 		endcase
-	end
-	
-	wire softRst;
-	reg  [4:0]sync_reg;
-	assign softRst = (sync_reg[0] & sync_reg[1] & !sync_reg[2] & !sync_reg[3] & !sync_reg[4]);
-	
-	always @ (posedge clk) begin
-			sync_reg[0] <= export_frame_sync;
-			sync_reg[1] <= sync_reg[0];
-			sync_reg[2] <= sync_reg[1];
-			sync_reg[3]	<= sync_reg[2];
-			sync_reg[4]	<= sync_reg[3];
 	end
 endmodule

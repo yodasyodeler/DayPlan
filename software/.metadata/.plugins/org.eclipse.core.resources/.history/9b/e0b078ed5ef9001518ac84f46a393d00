@@ -1,0 +1,142 @@
+#include <stdio.h>
+#include "common.h"
+#include "drawLib.h"
+#include "FAT16SD.h"
+#include "i2cAvalon.h"
+#include "TouchI2C.h"
+#include "fontWriterSPI.h"
+#include "ClockI2C.h"
+
+//void testTouch();
+//void DrawColorPicker(uint8_t frame);
+//void DrawApplication();
+
+void initDrivers();
+void displayTouch();
+
+uint8_t isBusy()
+{
+	return (IORD(LCDFRAMEBUFFER_0_BASE, 0) & 0x2);
+}
+
+void refreshScreen()
+{
+	IOWR(LCDFRAMEBUFFER_0_BASE, 0, 0);
+}
+
+char* weekdays[7] = { "Sunday",
+					  "Monday",
+					  "Tuesday",
+					  "Wednesday",
+					  "Thursday",
+					  "Friday",
+					  "Saturday"
+};
+
+int main()
+{
+	int holder;
+	printf("hello from main\n");
+
+	IOWR(LCDFRAMEBUFFER_0_BASE, 3, 1);
+	holder = IORD(LCDFRAMEBUFFER_0_BASE, 3);
+
+
+	initDrivers();
+
+	//writeHour(0x5|STANDARDTIME|PM);
+
+	displayTouch();
+
+
+	return 0;
+}
+
+
+void initDrivers()
+{
+	IOWR(LCDFRAMEBUFFER_0_BASE, 1, 8);
+	initTouchI2C();
+	if (sdMount() != 0)
+		while(1);
+	if (initFontMap("FONT    ", "BMP") != 0)
+		while(1);
+}
+
+void displayTouch()
+{
+	uint16_t xCord[2] = {0,1};
+	uint16_t yCord[2] = {0,1};
+	uint8_t numTouch[2] = {0,2};
+	uint8_t invert = 0;
+	uint8_t seconds[2], minutes[2], hours[2];
+	uint8_t weekday[2], day[2], month[2], year[2];
+	uint8_t periodOfTime;
+	char* AMPM[2] = {"AM", "PM"};
+	//drawFrame(RED, 0);
+	//drawRectangleFill(GREY,0,0,400,240,0);
+	flipFrame(0);
+
+	drawLineH(RED,0,0,800,0);
+	drawLineH(RED,0,1,800,0);
+	drawLineH(GREEN,0,2,800,0);
+	drawLineH(GREEN,0,3,800,0);
+	drawLineH(BLUE,0,4,800,0);
+	drawLineH(BLUE,0,5,800,0);
+	drawLineH(YELLOW,0,5,800,0);
+	drawLineH(YELLOW,0,7,800,0);
+	drawLineH(PURPLE,0,8,800,0);
+	drawLineH(PURPLE,0,9,800,0);
+
+	for (invert = 0; invert < 200; ++invert)
+		xCord[0] = readDrawFrom(invert);
+
+	changeColorFont(GREEN);
+	//printk("Cory ");//Barney\t\t\tTouch Report  &  Time \t\t\t   CST 451
+
+
+	while(1){
+//		readTime(&seconds[invert], &minutes[invert], &hours[invert]);
+//		if (seconds[0]!=seconds[1]){
+//			drawRectangleFill(GREY,240,250,350, 266,0);
+//			moveCursorFont(200,250,0);
+//			periodOfTime = ((*hours & PM) > 0);
+//			printk("Time: %x:%x:%x %s", 0x1F&hours[invert], minutes[invert], seconds[invert], AMPM[periodOfTime]);
+//		}
+//
+//		if (hours[0] != hours[1]){
+//			readDate(&weekday[invert], &day[invert], &month[invert], &year[invert]);
+//			if (day[0]!=day[1]){
+//				drawRectangleFill(GREY,240,266,300, 282,0);
+//				drawRectangleFill(GREY,240,282,350, 298,0);
+//				moveCursorFont(200,266,0);
+//				printk("Date: %x/%x/%x", month[invert], day[invert], year[invert]);
+//				moveCursorFont(200,282,0);
+//				printk("Weekday: %s", weekdays[weekday[invert]-1]);
+//			}
+//		}
+//
+//		numTouch[invert] = readNumTouch();
+//		if (numTouch[0] != numTouch[1]){
+//			drawRectangleFill(GREY,350,120,382, 136,0);
+//			moveCursorFont(200,120,0);
+//			printk("Number of Touches: %d", numTouch[invert]);
+//		}
+//
+//		readTouchCord(0, &xCord[invert], &yCord[invert]);
+//		if (xCord[0]!=xCord[1] || yCord[0]!=yCord[1]){
+//			drawRectangleFill(GREY,300,150,340, 182,0);
+//			moveCursorFont(200,150,0);
+//			printk("X coordinate: %d", xCord[invert]);
+//			moveCursorFont(200,166,0);
+//			printk("Y coordinate: %d", yCord[invert]);
+//		}
+//
+//		usleep(20000);
+//		invert ^= 1;
+		refreshScreen();
+
+	}
+}
+
+

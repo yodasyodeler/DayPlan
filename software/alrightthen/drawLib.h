@@ -6,6 +6,8 @@
 #include "common.h"
 
 
+void refreshScreen();
+uint8_t isBusyScreenDraw();
 
 void drawRectangleFill(uint16_t color, int x0, int y0, int x1, int y1, uint8_t frame);
 void drawCircle(uint16_t color, int x0, int y0, int radius, uint8_t frame);

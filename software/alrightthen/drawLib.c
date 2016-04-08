@@ -1,6 +1,13 @@
 #include "drawLib.h"
 
-
+uint8_t isBusyScreenDraw()
+{
+	return (IORD(LCDFRAMEBUFFER_0_BASE, 0) & 0x2);
+}
+void refreshScreen()
+{
+	IOWR(LCDFRAMEBUFFER_0_BASE, 0, 0);
+}
 
 void drawRectangleFill(uint16_t color, int x0, int y0, int x1, int y1, uint8_t frame)
 {
@@ -21,17 +28,17 @@ void drawCircle(uint16_t color, int x0, int y0, int radius, uint8_t frame)
 
   while( shift <= radius )
   {
-	  IOWR_16DIRECT(NEW_SDRAM_CONTROLLER_0_BASE, (xyLocation( shift +x0,-radius+y0)<<2)+offset, color); //Clockwise
-	  IOWR_16DIRECT(NEW_SDRAM_CONTROLLER_0_BASE, (xyLocation( radius+x0,-shift +y0)<<2)+offset, color);
+	  IOWR(NEW_SDRAM_CONTROLLER_0_BASE, (xyLocation( shift +x0,-radius+y0))+offset, color); //Clockwise
+	  IOWR(NEW_SDRAM_CONTROLLER_0_BASE, (xyLocation( radius+x0,-shift +y0))+offset, color);
 
-	  IOWR_16DIRECT(NEW_SDRAM_CONTROLLER_0_BASE, (xyLocation( radius+x0, shift +y0)<<2)+offset, color);
-	  IOWR_16DIRECT(NEW_SDRAM_CONTROLLER_0_BASE, (xyLocation( shift +x0, radius+y0)<<2)+offset, color);
+	  IOWR(NEW_SDRAM_CONTROLLER_0_BASE, (xyLocation( radius+x0, shift +y0))+offset, color);
+	  IOWR(NEW_SDRAM_CONTROLLER_0_BASE, (xyLocation( shift +x0, radius+y0))+offset, color);
 
-	  IOWR_16DIRECT(NEW_SDRAM_CONTROLLER_0_BASE, (xyLocation(-shift +x0, radius+y0)<<2)+offset, color);
-	  IOWR_16DIRECT(NEW_SDRAM_CONTROLLER_0_BASE, (xyLocation(-radius+x0, shift +y0)<<2)+offset, color);
+	  IOWR(NEW_SDRAM_CONTROLLER_0_BASE, (xyLocation(-shift +x0, radius+y0))+offset, color);
+	  IOWR(NEW_SDRAM_CONTROLLER_0_BASE, (xyLocation(-radius+x0, shift +y0))+offset, color);
 
-	  IOWR_16DIRECT(NEW_SDRAM_CONTROLLER_0_BASE, (xyLocation(-radius+x0,-shift +y0)<<2)+offset, color);
-	  IOWR_16DIRECT(NEW_SDRAM_CONTROLLER_0_BASE, (xyLocation(-shift +x0,-radius+y0)<<2)+offset, color);
+	  IOWR(NEW_SDRAM_CONTROLLER_0_BASE, (xyLocation(-radius+x0,-shift +y0))+offset, color);
+	  IOWR(NEW_SDRAM_CONTROLLER_0_BASE, (xyLocation(-shift +x0,-radius+y0))+offset, color);
 
 
     ++shift;
@@ -75,36 +82,35 @@ void drawCircleFill(uint16_t color, int x0, int y0, int radius, uint8_t frame)
 }
 int  readDrawFrom(int address)
 {
-	return IORD_16DIRECT(NEW_SDRAM_CONTROLLER_0_BASE, address);
+	return IORD(NEW_SDRAM_CONTROLLER_0_BASE, address);
 }
 void drawTo(uint16_t data, int address)
 {
-	IOWR_16DIRECT(NEW_SDRAM_CONTROLLER_0_BASE, address<<2, data);
+	IOWR(NEW_SDRAM_CONTROLLER_0_BASE, address, data);
 }
 void drawToFrame(int address, uint16_t data, uint8_t frame)
 {
-	IOWR_16DIRECT(NEW_SDRAM_CONTROLLER_0_BASE, (address<<2)+(FRAMEADDRSIZE*frame), data);
+	IOWR(NEW_SDRAM_CONTROLLER_0_BASE, (address)+(FRAMEADDRSIZE*frame), data);
 }
 void drawFrame(uint16_t color, uint8_t frame)
 {
 	int i;
 	int offset = frame*FRAMEADDRSIZE;
-	for (i=0; i<FRAMEADDRSIZE; i+=4)
-		IOWR_16DIRECT(NEW_SDRAM_CONTROLLER_0_BASE, i+offset, color);
+	for (i=0; i<FRAMEADDRSIZE; ++i)
+		IOWR(NEW_SDRAM_CONTROLLER_0_BASE, i+offset, color);
 }
 void flipFrame(int frame)
 {
-	IOWR_32DIRECT(FRAMEBUFFER_SDRAM_0_BASE, 0, ((FRAMEADDRSIZE*frame)|0x01) );
+	IOWR(LCDFRAMEBUFFER_0_BASE, 3, (((FRAMEADDRSIZE*frame)<<2)|0x01) );
 }
 void drawLineH(uint16_t color, uint16_t startx, uint16_t starty, int length, uint8_t frame)
 {
 	int i;
 	int offset = 0;
 
-	offset += xyLocation(startx,starty)<<2;
+	offset += xyLocation(startx,starty);
 	offset += FRAMEADDRSIZE*frame;
 
-	length = length<<2;
-	for (i=0; i<length; i+=4)
-		IOWR_16DIRECT(NEW_SDRAM_CONTROLLER_0_BASE, offset+i, color);
+	for (i=0; i<length; ++i)
+		IOWR(NEW_SDRAM_CONTROLLER_0_BASE, offset+i, color);
 }

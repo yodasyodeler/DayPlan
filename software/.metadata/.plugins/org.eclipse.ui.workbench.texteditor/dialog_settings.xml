@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="false" key="isRegEx"/>
+		<item value="timer" key="selection"/>
+		<item value="false" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="true" key="wrap"/>
+		<item value="false" key="wholeword"/>
+		<list key="findhistory">
+			<item value="timer"/>
+			<item value="interval"/>
+			<item value="IOWR16"/>
+			<item value="weekdays"/>
+			<item value="cursorPage"/>
+			<item value="fontColor"/>
+			<item value="cursorColor"/>
+			<item value="cursorY"/>
+		</list>
+		<list key="replacehistory">
+			<item value="IOWR"/>
+			<item value="fontCursor.page"/>
+			<item value="fontCursor.color"/>
+			<item value="fontCursor.y"/>
+			<item value="fontCursor.x"/>
+			<item value="fontCursor.cursorX"/>
+			<item value="coordinate"/>
+			<item value="FRAMESWITCHADDRESS"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="257" key="DIALOG_WIDTH"/>
+		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
+		<item value="422" key="DIALOG_HEIGHT"/>
+		<item value="1256" key="DIALOG_X_ORIGIN"/>
+		<item value="244" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

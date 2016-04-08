@@ -13,13 +13,3 @@ PLLJITTER	NA
 PLLSPEmax	NA
 PLLSPEmin	NA
 
-PLL_Name	DE1_SOC_NIOS_2:u0|DE1_SOC_NIOS_2_pll_I2C:pll_i2c|altera_pll:altera_pll_i|general[0].gpll~FRACTIONAL_PLL
-PLLJITTER	27
-PLLSPEmax	100
-PLLSPEmin	-100
-
-PLL_Name	DE1_SOC_NIOS_2:u0|DE1_SOC_NIOS_2_pll_I2C:pll_i2c|altera_pll:altera_pll_i|general[1].gpll~PLL_OUTPUT_COUNTER
-PLLJITTER	NA
-PLLSPEmax	NA
-PLLSPEmin	NA
-

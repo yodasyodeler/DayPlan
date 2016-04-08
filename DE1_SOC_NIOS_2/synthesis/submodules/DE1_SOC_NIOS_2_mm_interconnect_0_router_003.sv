@@ -47,7 +47,7 @@ module DE1_SOC_NIOS_2_mm_interconnect_0_router_003_default_decode
      parameter DEFAULT_CHANNEL = 0,
                DEFAULT_WR_CHANNEL = -1,
                DEFAULT_RD_CHANNEL = -1,
-               DEFAULT_DESTID = 2 
+               DEFAULT_DESTID = 0 
    )
   (output [71 - 69 : 0] default_destination_id,
    output [7-1 : 0] default_wr_channel,
@@ -184,11 +184,11 @@ module DE1_SOC_NIOS_2_mm_interconnect_0_router_003
 
 
 
-        if (destid == 2 ) begin
+        if (destid == 0 ) begin
             src_channel = 7'b01;
         end
 
-        if (destid == 0 ) begin
+        if (destid == 1 ) begin
             src_channel = 7'b10;
         end
 

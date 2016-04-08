@@ -142,17 +142,18 @@ ACDS_VERSION := 15.0
 ELF := alrightthen.elf
 
 # Paths to C, C++, and assembly source files.
-C_SRCS += hello_world.c
-C_SRCS += drawLib.c
-C_SRCS += SDCardSPI.c
-C_SRCS += FAT16SD.c
-C_SRCS += i2cAvalon.c
-C_SRCS += bitmapSPI.c
-C_SRCS += DrawApplication.c
-C_SRCS += fontWriterSPI.c
-C_SRCS += c_stl.c
-C_SRCS += TouchI2C.c
 C_SRCS += ClockI2C.c
+C_SRCS += DrawApplication.c
+C_SRCS += FAT16SD.c
+C_SRCS += SDCardSPI.c
+C_SRCS += TouchI2C.c
+C_SRCS += bitmapSPI.c
+C_SRCS += c_stl.c
+C_SRCS += calendar.c
+C_SRCS += drawLib.c
+C_SRCS += fontWriterSPI.c
+C_SRCS += hello_world.c
+C_SRCS += i2cAvalon.c
 CXX_SRCS :=
 ASM_SRCS :=
 

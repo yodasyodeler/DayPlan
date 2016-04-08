@@ -198,7 +198,7 @@ module DE1_SOC_NIOS_2_mm_interconnect_0_router_002
     // ( 0x4080800 .. 0x4081000 )
     if ( {address[RG:PAD1],{PAD1{1'b0}}} == 27'h4080800   ) begin
             src_channel = 7'b01;
-            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 1;
+            src_data[PKT_DEST_ID_H:PKT_DEST_ID_L] = 2;
     end
 
 end

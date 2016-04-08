@@ -1,11 +1,14 @@
 
 module DE1_SOC_NIOS_2 (
 	clk_clk,
-	clock_23m_clk,
-	clock_6400k_clk,
 	i2c_rst,
 	i2c_sda,
 	i2c_sclk,
+	lcd_lcd_cs,
+	lcd_lcd_data,
+	lcd_lcd_dc,
+	lcd_lcd_rst,
+	lcd_lcd_wr,
 	new_sdram_controller_0_wire_addr,
 	new_sdram_controller_0_wire_ba,
 	new_sdram_controller_0_wire_cas_n,
@@ -15,11 +18,6 @@ module DE1_SOC_NIOS_2 (
 	new_sdram_controller_0_wire_dqm,
 	new_sdram_controller_0_wire_ras_n,
 	new_sdram_controller_0_wire_we_n,
-	pixel_read_clk,
-	pixel_ready,
-	pixel_valid,
-	pixel_readdata,
-	pixel_frame_sync,
 	reset_reset_n,
 	sd_sd_cs,
 	sd_sd_clk,
@@ -28,11 +26,14 @@ module DE1_SOC_NIOS_2 (
 	sdram_clk_clk);	
 
 	input		clk_clk;
-	output		clock_23m_clk;
-	output		clock_6400k_clk;
 	output		i2c_rst;
 	inout		i2c_sda;
 	inout		i2c_sclk;
+	output		lcd_lcd_cs;
+	output	[23:0]	lcd_lcd_data;
+	output		lcd_lcd_dc;
+	output		lcd_lcd_rst;
+	output		lcd_lcd_wr;
 	output	[12:0]	new_sdram_controller_0_wire_addr;
 	output	[1:0]	new_sdram_controller_0_wire_ba;
 	output		new_sdram_controller_0_wire_cas_n;
@@ -42,11 +43,6 @@ module DE1_SOC_NIOS_2 (
 	output	[1:0]	new_sdram_controller_0_wire_dqm;
 	output		new_sdram_controller_0_wire_ras_n;
 	output		new_sdram_controller_0_wire_we_n;
-	input		pixel_read_clk;
-	input		pixel_ready;
-	output		pixel_valid;
-	output	[15:0]	pixel_readdata;
-	input		pixel_frame_sync;
 	input		reset_reset_n;
 	output		sd_sd_cs;
 	output		sd_sd_clk;
