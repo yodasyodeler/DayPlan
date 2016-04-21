@@ -1,0 +1,13 @@
+#include "clock.h"
+
+int initClock(char fileName[8], char fileExt[3])
+{
+
+
+}
+
+void displayClock(uint32_t frame)
+{
+
+
+}

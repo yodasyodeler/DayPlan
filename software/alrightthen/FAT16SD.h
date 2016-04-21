@@ -39,7 +39,7 @@ typedef struct fat16_file {
 
 
 int sdMount();
-int sdOpen(char fileName[8], char fileExt[3]);
+int sdOpen(const char fileName[8], const char fileExt[3]);
 int sdReadNext();
 
 

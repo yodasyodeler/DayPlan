@@ -4,6 +4,10 @@ uint8_t sdBuffer[512];
 fat16Boot bData;
 fat16File file;
 
+/* sdMount
+ *   initializes sd card through spi
+ *   Populates Fat16Boot data
+ */
 int sdMount() {
 	uint32_t bootRecordAddr = 0;
 
@@ -50,7 +54,12 @@ int sdMount() {
 
 	return 0;
 }
-int sdOpen(char fileName[8], char fileExt[3]){
+
+/* sdOpen
+ *   Attempts to find a file and then
+ *
+ */
+int sdOpen(const char fileName[8], const char fileExt[3]){
 	uint8_t cont = 1;
 	file._isOpen = 0;
 	int i;
@@ -58,13 +67,13 @@ int sdOpen(char fileName[8], char fileExt[3]){
 
 
 	for (i=0; i<(bData._rdirSize/16) && cont; ++i){
-		if (sd_readSector(bData._sdhc, bData._rdirAddr+file._rdirIndex, sdBuffer) != 0){
+		if (sd_readSector(bData._sdhc, bData._rdirAddr+i, sdBuffer) != 0){
 			printf("SD directory read failed \n");
 			return -1;
 		}
 		for (j=0; j<16 && cont; ++j){
-			if ( !strncmp((char*)&(sdBuffer[(i*512)+(j*32)])  , fileName, 8) &&
-				 !strncmp((char*)&(sdBuffer[(i*512)+(j*32)+8]), fileExt , 3) )
+			if ( !strncmp((char*)&(sdBuffer[(j*32)])  , fileName, 8) &&
+				 !strncmp((char*)&(sdBuffer[(j*32)+8]), fileExt , 3) )
 				cont = 0;
 		}
 	}

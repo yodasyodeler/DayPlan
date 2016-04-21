@@ -601,11 +601,19 @@
          type = "String";
       }
    }
+   element DE1_SOC_NIOS_2
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
    element LCDFrameBuffer_0
    {
       datum _sortIndex
       {
-         value = "8";
+         value = "7";
          type = "int";
       }
    }
@@ -613,7 +621,7 @@
    {
       datum baseAddress
       {
-         value = "67637328";
+         value = "67637344";
          type = "String";
       }
    }
@@ -629,7 +637,7 @@
    {
       datum baseAddress
       {
-         value = "67637312";
+         value = "67637328";
          type = "String";
       }
    }
@@ -661,7 +669,7 @@
    {
       datum _sortIndex
       {
-         value = "10";
+         value = "9";
          type = "int";
       }
    }
@@ -669,7 +677,7 @@
    {
       datum baseAddress
       {
-         value = "67637248";
+         value = "67637280";
          type = "String";
       }
    }
@@ -677,7 +685,7 @@
    {
       datum _sortIndex
       {
-         value = "7";
+         value = "10";
          type = "int";
       }
    }
@@ -685,7 +693,7 @@
    {
       datum baseAddress
       {
-         value = "67637344";
+         value = "67637312";
          type = "String";
       }
    }
@@ -749,7 +757,7 @@
    {
       datum _sortIndex
       {
-         value = "9";
+         value = "8";
          type = "int";
       }
    }
@@ -757,7 +765,7 @@
    {
       datum baseAddress
       {
-         value = "67637280";
+         value = "67637248";
          type = "String";
       }
    }
@@ -837,7 +845,7 @@
   <parameter name="dataAddrWidth" value="27" />
   <parameter name="dataMasterHighPerformanceAddrWidth" value="1" />
   <parameter name="dataMasterHighPerformanceMapParam" value="" />
-  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='new_sdram_controller_0.s1' start='0x0' end='0x4000000' /><slave name='onchip_memory2.s1' start='0x4040000' end='0x4072000' /><slave name='cpu.debug_mem_slave' start='0x4080800' end='0x4081000' /><slave name='dma_0.control_port_slave' start='0x4081000' end='0x4081020' /><slave name='timer_0.s1' start='0x4081020' end='0x4081040' /><slave name='SPI_AVALON_SD_0.sd' start='0x4081040' end='0x4081050' /><slave name='LCDFrameBuffer_0.s0' start='0x4081050' end='0x4081060' /><slave name='i2c_AVALON_0.i2c' start='0x4081060' end='0x4081070' /><slave name='jtag_uart.avalon_jtag_slave' start='0x4081070' end='0x4081078' /></address-map>]]></parameter>
+  <parameter name="dataSlaveMapParam"><![CDATA[<address-map><slave name='new_sdram_controller_0.s1' start='0x0' end='0x4000000' /><slave name='onchip_memory2.s1' start='0x4040000' end='0x4072000' /><slave name='cpu.debug_mem_slave' start='0x4080800' end='0x4081000' /><slave name='timer_0.s1' start='0x4081000' end='0x4081020' /><slave name='dma_0.control_port_slave' start='0x4081020' end='0x4081040' /><slave name='i2c_AVALON_0.i2c' start='0x4081040' end='0x4081050' /><slave name='SPI_AVALON_SD_0.sd' start='0x4081050' end='0x4081060' /><slave name='LCDFrameBuffer_0.s0' start='0x4081060' end='0x4081070' /><slave name='jtag_uart.avalon_jtag_slave' start='0x4081070' end='0x4081078' /></address-map>]]></parameter>
   <parameter name="data_master_high_performance_paddr_base" value="0" />
   <parameter name="data_master_high_performance_paddr_size" value="0" />
   <parameter name="data_master_paddr_base" value="0" />
@@ -883,7 +891,7 @@
   <parameter name="instruction_master_high_performance_paddr_size" value="0" />
   <parameter name="instruction_master_paddr_base" value="0" />
   <parameter name="instruction_master_paddr_size" value="0" />
-  <parameter name="internalIrqMaskSystemInfo" value="7" />
+  <parameter name="internalIrqMaskSystemInfo" value="15" />
   <parameter name="io_regionbase" value="0" />
   <parameter name="io_regionsize" value="0" />
   <parameter name="master_addr_map" value="false" />
@@ -1331,7 +1339,7 @@
    start="cpu.data_master"
    end="dma_0.control_port_slave">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x04081000" />
+  <parameter name="baseAddress" value="0x04081020" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1349,7 +1357,7 @@
    start="cpu.data_master"
    end="i2c_AVALON_0.i2c">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x04081060" />
+  <parameter name="baseAddress" value="0x04081040" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1358,7 +1366,7 @@
    start="cpu.data_master"
    end="LCDFrameBuffer_0.s0">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x04081050" />
+  <parameter name="baseAddress" value="0x04081060" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1381,7 +1389,7 @@
  </connection>
  <connection kind="avalon" version="15.0" start="cpu.data_master" end="timer_0.s1">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x04081020" />
+  <parameter name="baseAddress" value="0x04081000" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1390,7 +1398,7 @@
    start="cpu.data_master"
    end="SPI_AVALON_SD_0.sd">
   <parameter name="arbitrationPriority" value="1" />
-  <parameter name="baseAddress" value="0x04081040" />
+  <parameter name="baseAddress" value="0x04081050" />
   <parameter name="defaultConnection" value="false" />
  </connection>
  <connection
@@ -1436,6 +1444,11 @@
    version="15.0"
    start="clk_0.clk"
    end="LCDFrameBuffer_0.clock" />
+ <connection
+   kind="clock"
+   version="15.0"
+   start="clk_0.clk"
+   end="i2c_AVALON_0.clock" />
  <connection kind="clock" version="15.0" start="clk_0.clk" end="pll.refclk" />
  <connection kind="clock" version="15.0" start="pll.outclk0" end="jtag_uart.clk" />
  <connection kind="clock" version="15.0" start="pll.outclk0" end="cpu.clk" />
@@ -1455,10 +1468,12 @@
    start="pll.outclk0"
    end="SPI_AVALON_SD_0.clock" />
  <connection
-   kind="clock"
+   kind="interrupt"
    version="15.0"
-   start="pll.outclk0"
-   end="i2c_AVALON_0.clock" />
+   start="cpu.irq"
+   end="i2c_AVALON_0.interrupt_sender">
+  <parameter name="irqNumber" value="3" />
+ </connection>
  <connection kind="interrupt" version="15.0" start="cpu.irq" end="jtag_uart.irq">
   <parameter name="irqNumber" value="0" />
  </connection>
@@ -1489,13 +1504,13 @@
    kind="reset"
    version="15.0"
    start="clk_0.clk_reset"
-   end="i2c_AVALON_0.reset" />
+   end="timer_0.reset" />
+ <connection kind="reset" version="15.0" start="clk_0.clk_reset" end="dma_0.reset" />
  <connection
    kind="reset"
    version="15.0"
    start="clk_0.clk_reset"
-   end="timer_0.reset" />
- <connection kind="reset" version="15.0" start="clk_0.clk_reset" end="dma_0.reset" />
+   end="i2c_AVALON_0.reset" />
  <connection
    kind="reset"
    version="15.0"

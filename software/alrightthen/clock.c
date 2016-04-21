@@ -1,0 +1,42 @@
+#include "clock.h"
+
+static uint16_t cDigitColor = BLACK;
+static uint16_t cBGColor = WHITE;
+
+int initClock()
+{
+//	int ramIndex = 0;
+//		int i = 0;
+//
+//		if (sdOpen("DIGITSEG", "BMP") != 0)
+//			return -1;
+//
+//		if (sdBuffer[0] != 0x42 || sdBuffer[1] != 0x4D)
+//			return -2;
+//		else{
+//			cFileSize = grabWord(sdBuffer, 2);
+//			cBitmapPos  = grabWord(sdBuffer, 10);
+//			cBitmapSize = cFileSize - cBitmapPos;
+//			cBitmapHeight = grabWord(sdBuffer, 22);
+//			cBitmapWidth  = grabWord(sdBuffer, 18);
+//
+//
+//		for(i=cBitmapPos; i<bData._sectorSize && ramIndex < cBitmapSize; i+=2){
+//			IOWR(NEW_SDRAM_CONTROLLER_0_BASE, DIGITSEGADDR + (32*((cBitmapHeight) - ((ramIndex/32)+1))) + (ramIndex%32), ((sdBuffer[i])<<8)|(sdBuffer[i+1]) );
+//			ramIndex += 2;
+//		}
+//		while (sdReadNext() == 0){
+//			for(i=0;  i <bData._sectorSize && ramIndex < cBitmapSize ; i+=2){
+//				IOWR(NEW_SDRAM_CONTROLLER_0_BASE, DIGITSEGADDR + (32*((cBitmapHeight) - ((ramIndex/32)+1))) + (ramIndex%32), ((sdBuffer[i])<<8)|(sdBuffer[i+1]) );
+//				ramIndex += 2;
+//			}
+//		}
+//}
+return 0;
+
+}
+
+void displayClock(uint32_t frame)
+{
+
+}

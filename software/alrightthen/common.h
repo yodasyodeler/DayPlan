@@ -22,6 +22,9 @@
 #define SKYBLUE 0x07FF
 #define BLACK 0x0000
 #define WHITE 0xFFFF
+#define OFFWHITE 0xEF5D
+#define LIGHTGREY 0x8C71
 #define GREY 0x4A49
+#define DARKGREY 0x39E7
 
 #endif

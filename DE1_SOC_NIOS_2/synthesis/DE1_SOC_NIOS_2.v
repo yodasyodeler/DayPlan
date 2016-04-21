@@ -8,6 +8,7 @@ module DE1_SOC_NIOS_2 (
 		output wire        i2c_rst,                           //                         i2c.rst
 		inout  wire        i2c_sda,                           //                            .sda
 		inout  wire        i2c_sclk,                          //                            .sclk
+		input  wire        i2c_touch,                         //                            .touch
 		output wire        lcd_lcd_cs,                        //                         lcd.lcd_cs
 		output wire [23:0] lcd_lcd_data,                      //                            .lcd_data
 		output wire        lcd_lcd_dc,                        //                            .lcd_dc
@@ -30,7 +31,7 @@ module DE1_SOC_NIOS_2 (
 		output wire        sdram_clk_clk                      //                   sdram_clk.clk
 	);
 
-	wire         pll_outclk0_clk;                                           // pll:outclk_0 -> [SPI_AVALON_SD_0:clk, cpu:clk, i2c_AVALON_0:clk, irq_mapper:clk, irq_synchronizer:sender_clk, irq_synchronizer_001:sender_clk, jtag_uart:clk, mm_interconnect_0:pll_outclk0_clk, new_sdram_controller_0:clk, onchip_memory2:clk, rst_controller_001:clk]
+	wire         pll_outclk0_clk;                                           // pll:outclk_0 -> [SPI_AVALON_SD_0:clk, cpu:clk, irq_mapper:clk, irq_synchronizer:sender_clk, irq_synchronizer_001:sender_clk, irq_synchronizer_002:sender_clk, jtag_uart:clk, mm_interconnect_0:pll_outclk0_clk, new_sdram_controller_0:clk, onchip_memory2:clk, rst_controller_001:clk]
 	wire         lcdframebuffer_0_avalon_master_chipselect;                 // LCDFrameBuffer_0:m0_chipselect -> mm_interconnect_0:LCDFrameBuffer_0_avalon_master_chipselect
 	wire         lcdframebuffer_0_avalon_master_waitrequest;                // mm_interconnect_0:LCDFrameBuffer_0_avalon_master_waitrequest -> LCDFrameBuffer_0:m0_waitrequest
 	wire  [15:0] lcdframebuffer_0_avalon_master_readdata;                   // mm_interconnect_0:LCDFrameBuffer_0_avalon_master_readdata -> LCDFrameBuffer_0:m0_readdata
@@ -121,14 +122,16 @@ module DE1_SOC_NIOS_2 (
 	wire   [1:0] mm_interconnect_0_spi_avalon_sd_0_sd_address;              // mm_interconnect_0:SPI_AVALON_SD_0_sd_address -> SPI_AVALON_SD_0:sd_address
 	wire         mm_interconnect_0_spi_avalon_sd_0_sd_write;                // mm_interconnect_0:SPI_AVALON_SD_0_sd_write -> SPI_AVALON_SD_0:sd_write
 	wire  [31:0] mm_interconnect_0_spi_avalon_sd_0_sd_writedata;            // mm_interconnect_0:SPI_AVALON_SD_0_sd_writedata -> SPI_AVALON_SD_0:sd_writedata
-	wire         irq_mapper_receiver0_irq;                                  // jtag_uart:av_irq -> irq_mapper:receiver0_irq
+	wire         irq_mapper_receiver1_irq;                                  // jtag_uart:av_irq -> irq_mapper:receiver1_irq
 	wire  [31:0] cpu_irq_irq;                                               // irq_mapper:sender_irq -> cpu:irq
-	wire         irq_mapper_receiver1_irq;                                  // irq_synchronizer:sender_irq -> irq_mapper:receiver1_irq
-	wire   [0:0] irq_synchronizer_receiver_irq;                             // timer_0:irq -> irq_synchronizer:receiver_irq
+	wire         irq_mapper_receiver0_irq;                                  // irq_synchronizer:sender_irq -> irq_mapper:receiver0_irq
+	wire   [0:0] irq_synchronizer_receiver_irq;                             // i2c_AVALON_0:i2c_irq -> irq_synchronizer:receiver_irq
 	wire         irq_mapper_receiver2_irq;                                  // irq_synchronizer_001:sender_irq -> irq_mapper:receiver2_irq
-	wire   [0:0] irq_synchronizer_001_receiver_irq;                         // dma_0:dma_ctl_irq -> irq_synchronizer_001:receiver_irq
-	wire         rst_controller_reset_out_reset;                            // rst_controller:reset_out -> [LCDFrameBuffer_0:rst, dma_0:system_reset_n, irq_synchronizer:receiver_reset, irq_synchronizer_001:receiver_reset, mm_interconnect_0:LCDFrameBuffer_0_rst_reset_bridge_in_reset_reset, timer_0:reset_n]
-	wire         rst_controller_001_reset_out_reset;                        // rst_controller_001:reset_out -> [SPI_AVALON_SD_0:reset, cpu:reset_n, i2c_AVALON_0:reset, irq_mapper:reset, irq_synchronizer:sender_reset, irq_synchronizer_001:sender_reset, jtag_uart:rst_n, mm_interconnect_0:cpu_reset_reset_bridge_in_reset_reset, new_sdram_controller_0:reset_n, onchip_memory2:reset, rst_translator:in_reset]
+	wire   [0:0] irq_synchronizer_001_receiver_irq;                         // timer_0:irq -> irq_synchronizer_001:receiver_irq
+	wire         irq_mapper_receiver3_irq;                                  // irq_synchronizer_002:sender_irq -> irq_mapper:receiver3_irq
+	wire   [0:0] irq_synchronizer_002_receiver_irq;                         // dma_0:dma_ctl_irq -> irq_synchronizer_002:receiver_irq
+	wire         rst_controller_reset_out_reset;                            // rst_controller:reset_out -> [LCDFrameBuffer_0:rst, dma_0:system_reset_n, i2c_AVALON_0:reset, irq_synchronizer:receiver_reset, irq_synchronizer_001:receiver_reset, irq_synchronizer_002:receiver_reset, mm_interconnect_0:LCDFrameBuffer_0_rst_reset_bridge_in_reset_reset, timer_0:reset_n]
+	wire         rst_controller_001_reset_out_reset;                        // rst_controller_001:reset_out -> [SPI_AVALON_SD_0:reset, cpu:reset_n, irq_mapper:reset, irq_synchronizer:sender_reset, irq_synchronizer_001:sender_reset, irq_synchronizer_002:sender_reset, jtag_uart:rst_n, mm_interconnect_0:cpu_reset_reset_bridge_in_reset_reset, new_sdram_controller_0:reset_n, onchip_memory2:reset, rst_translator:in_reset]
 	wire         rst_controller_001_reset_out_reset_req;                    // rst_controller_001:reset_req -> [cpu:reset_req, onchip_memory2:reset_req, rst_translator:reset_req_in]
 
 	LCD_AVALON lcdframebuffer_0 (
@@ -207,7 +210,7 @@ module DE1_SOC_NIOS_2 (
 		.dma_ctl_readdata   (mm_interconnect_0_dma_0_control_port_slave_readdata),   //                   .readdata
 		.dma_ctl_write_n    (~mm_interconnect_0_dma_0_control_port_slave_write),     //                   .write_n
 		.dma_ctl_writedata  (mm_interconnect_0_dma_0_control_port_slave_writedata),  //                   .writedata
-		.dma_ctl_irq        (irq_synchronizer_001_receiver_irq),                     //                irq.irq
+		.dma_ctl_irq        (irq_synchronizer_002_receiver_irq),                     //                irq.irq
 		.read_address       (dma_0_read_master_address),                             //        read_master.address
 		.read_chipselect    (dma_0_read_master_chipselect),                          //                   .chipselect
 		.read_read_n        (dma_0_read_master_read),                                //                   .read_n
@@ -223,16 +226,18 @@ module DE1_SOC_NIOS_2 (
 	);
 
 	I2C_AVALON i2c_avalon_0 (
-		.clk            (pll_outclk0_clk),                               //       clock.clk
-		.reset          (rst_controller_001_reset_out_reset),            //       reset.reset
-		.i2c_chipselect (mm_interconnect_0_i2c_avalon_0_i2c_chipselect), //         i2c.chipselect
-		.i2c_write      (mm_interconnect_0_i2c_avalon_0_i2c_write),      //            .write
-		.i2c_address    (mm_interconnect_0_i2c_avalon_0_i2c_address),    //            .address
-		.i2c_writedata  (mm_interconnect_0_i2c_avalon_0_i2c_writedata),  //            .writedata
-		.i2c_readdata   (mm_interconnect_0_i2c_avalon_0_i2c_readdata),   //            .readdata
-		.i2c_reset      (i2c_rst),                                       // conduit_end.rst
-		.i2c_sda        (i2c_sda),                                       //            .sda
-		.i2c_sclk       (i2c_sclk)                                       //            .sclk
+		.clk            (clk_clk),                                       //            clock.clk
+		.reset          (rst_controller_reset_out_reset),                //            reset.reset
+		.i2c_chipselect (mm_interconnect_0_i2c_avalon_0_i2c_chipselect), //              i2c.chipselect
+		.i2c_write      (mm_interconnect_0_i2c_avalon_0_i2c_write),      //                 .write
+		.i2c_address    (mm_interconnect_0_i2c_avalon_0_i2c_address),    //                 .address
+		.i2c_writedata  (mm_interconnect_0_i2c_avalon_0_i2c_writedata),  //                 .writedata
+		.i2c_readdata   (mm_interconnect_0_i2c_avalon_0_i2c_readdata),   //                 .readdata
+		.i2c_reset      (i2c_rst),                                       //      conduit_end.rst
+		.i2c_sda        (i2c_sda),                                       //                 .sda
+		.i2c_sclk       (i2c_sclk),                                      //                 .sclk
+		.i2c_touch      (i2c_touch),                                     //                 .touch
+		.i2c_irq        (irq_synchronizer_receiver_irq)                  // interrupt_sender.irq
 	);
 
 	DE1_SOC_NIOS_2_jtag_uart jtag_uart (
@@ -245,7 +250,7 @@ module DE1_SOC_NIOS_2 (
 		.av_write_n     (~mm_interconnect_0_jtag_uart_avalon_jtag_slave_write),      //                  .write_n
 		.av_writedata   (mm_interconnect_0_jtag_uart_avalon_jtag_slave_writedata),   //                  .writedata
 		.av_waitrequest (mm_interconnect_0_jtag_uart_avalon_jtag_slave_waitrequest), //                  .waitrequest
-		.av_irq         (irq_mapper_receiver0_irq)                                   //               irq.irq
+		.av_irq         (irq_mapper_receiver1_irq)                                   //               irq.irq
 	);
 
 	DE1_SOC_NIOS_2_new_sdram_controller_0 new_sdram_controller_0 (
@@ -300,7 +305,7 @@ module DE1_SOC_NIOS_2 (
 		.readdata   (mm_interconnect_0_timer_0_s1_readdata),   //      .readdata
 		.chipselect (mm_interconnect_0_timer_0_s1_chipselect), //      .chipselect
 		.write_n    (~mm_interconnect_0_timer_0_s1_write),     //      .write_n
-		.irq        (irq_synchronizer_receiver_irq)            //   irq.irq
+		.irq        (irq_synchronizer_001_receiver_irq)        //   irq.irq
 	);
 
 	DE1_SOC_NIOS_2_mm_interconnect_0 mm_interconnect_0 (
@@ -406,6 +411,7 @@ module DE1_SOC_NIOS_2 (
 		.receiver0_irq (irq_mapper_receiver0_irq),           // receiver0.irq
 		.receiver1_irq (irq_mapper_receiver1_irq),           // receiver1.irq
 		.receiver2_irq (irq_mapper_receiver2_irq),           // receiver2.irq
+		.receiver3_irq (irq_mapper_receiver3_irq),           // receiver3.irq
 		.sender_irq    (cpu_irq_irq)                         //    sender.irq
 	);
 
@@ -417,7 +423,7 @@ module DE1_SOC_NIOS_2 (
 		.receiver_reset (rst_controller_reset_out_reset),     // receiver_clk_reset.reset
 		.sender_reset   (rst_controller_001_reset_out_reset), //   sender_clk_reset.reset
 		.receiver_irq   (irq_synchronizer_receiver_irq),      //           receiver.irq
-		.sender_irq     (irq_mapper_receiver1_irq)            //             sender.irq
+		.sender_irq     (irq_mapper_receiver0_irq)            //             sender.irq
 	);
 
 	altera_irq_clock_crosser #(
@@ -429,6 +435,17 @@ module DE1_SOC_NIOS_2 (
 		.sender_reset   (rst_controller_001_reset_out_reset), //   sender_clk_reset.reset
 		.receiver_irq   (irq_synchronizer_001_receiver_irq),  //           receiver.irq
 		.sender_irq     (irq_mapper_receiver2_irq)            //             sender.irq
+	);
+
+	altera_irq_clock_crosser #(
+		.IRQ_WIDTH (1)
+	) irq_synchronizer_002 (
+		.receiver_clk   (clk_clk),                            //       receiver_clk.clk
+		.sender_clk     (pll_outclk0_clk),                    //         sender_clk.clk
+		.receiver_reset (rst_controller_reset_out_reset),     // receiver_clk_reset.reset
+		.sender_reset   (rst_controller_001_reset_out_reset), //   sender_clk_reset.reset
+		.receiver_irq   (irq_synchronizer_002_receiver_irq),  //           receiver.irq
+		.sender_irq     (irq_mapper_receiver3_irq)            //             sender.irq
 	);
 
 	altera_reset_controller #(

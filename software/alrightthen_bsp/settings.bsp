@@ -2,8 +2,8 @@
 <sch:Settings xmlns:sch="http://www.altera.com/embeddedsw/bsp/schema">
         <BspType>hal</BspType>
         <BspVersion>default</BspVersion>
-        <BspGeneratedTimeStamp>Apr 7, 2016 12:32:16 AM</BspGeneratedTimeStamp>
-        <BspGeneratedUnixTimeStamp>1460014336934</BspGeneratedUnixTimeStamp>
+        <BspGeneratedTimeStamp>Apr 21, 2016 1:02:41 AM</BspGeneratedTimeStamp>
+        <BspGeneratedUnixTimeStamp>1461225761991</BspGeneratedUnixTimeStamp>
         <BspGeneratedLocation>C:\Users\cory_\Source\Repos\DayPlan\software\alrightthen_bsp</BspGeneratedLocation>
         <BspSettingsFile>settings.bsp</BspSettingsFile>
         <SopcDesignFile>..\..\DE1_SOC_NIOS_2.sopcinfo</SopcDesignFile>
@@ -899,31 +899,31 @@
                 <attributes>memory</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>dma_0</slaveDescriptor>
-                <addressRange>0x04081000 - 0x0408101F</addressRange>
-                <addressSpan>32</addressSpan>
-                <attributes/>
-        </MemoryMap>
-        <MemoryMap>
                 <slaveDescriptor>timer_0</slaveDescriptor>
-                <addressRange>0x04081020 - 0x0408103F</addressRange>
+                <addressRange>0x04081000 - 0x0408101F</addressRange>
                 <addressSpan>32</addressSpan>
                 <attributes>timer</attributes>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>SPI_AVALON_SD_0</slaveDescriptor>
+                <slaveDescriptor>dma_0</slaveDescriptor>
+                <addressRange>0x04081020 - 0x0408103F</addressRange>
+                <addressSpan>32</addressSpan>
+                <attributes/>
+        </MemoryMap>
+        <MemoryMap>
+                <slaveDescriptor>i2c_AVALON_0</slaveDescriptor>
                 <addressRange>0x04081040 - 0x0408104F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>LCDFrameBuffer_0</slaveDescriptor>
+                <slaveDescriptor>SPI_AVALON_SD_0</slaveDescriptor>
                 <addressRange>0x04081050 - 0x0408105F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>
         </MemoryMap>
         <MemoryMap>
-                <slaveDescriptor>i2c_AVALON_0</slaveDescriptor>
+                <slaveDescriptor>LCDFrameBuffer_0</slaveDescriptor>
                 <addressRange>0x04081060 - 0x0408106F</addressRange>
                 <addressSpan>16</addressSpan>
                 <attributes/>

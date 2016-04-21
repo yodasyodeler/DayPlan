@@ -1,0 +1,22 @@
+#ifndef BITMAPSD_H_
+#define BITMAPSD_H_
+
+
+#include "io.h"
+#include "system.h"
+#include "common.h"
+#include "FAT16SD.h"
+
+typedef struct _bitmapInfo{
+	int fileSize = 0;
+	int bitmapSize = 0;
+	int bitmapPos = 0;
+	int bitmapWidth = 0;
+	int bitmapHeight = 0;
+
+	int formatCode = 0;
+}bitmapHeader;
+
+int loadBitmap( uint32_t address, bitmapHeader* info);
+
+#endif

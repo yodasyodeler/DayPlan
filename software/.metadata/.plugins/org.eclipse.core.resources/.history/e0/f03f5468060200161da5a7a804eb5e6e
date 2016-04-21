@@ -1,0 +1,52 @@
+#include "image.h"
+
+uint32_t createImage(const char fileName[8], const char fileExt[3], const iImage* info)
+{
+	iImage image;
+
+	return image.ID;
+}
+uint32_t deleteImage(uint32_t ID)
+{
+	return 0;
+}
+
+void deleteAllImage()
+{
+
+}
+void closeImage()
+{
+
+}
+
+uint32_t displayImage(uint32_t ID)
+{
+	return 0;
+}
+void displayFrameImage(uint8_t frame)
+{
+
+}
+
+uint32_t setLayerImage(uint32_t ID, uint8_t layer)
+{
+	return 0;
+}
+uint32_t setScaleImage(uint32_t ID, uint8_t scale)
+{
+	return 0;
+}
+uint32_t setFrame(uint32_t ID, uint8_t frame)
+{
+	return 0;
+}
+uint32_t moveImage(uint32_t ID, uint16_t x, uint16_t y)
+{
+	return 0;
+}
+
+uint32_t getInfoImage(uint32_t ID, const iImage* image)
+{
+	return 0;
+}

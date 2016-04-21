@@ -1,0 +1,190 @@
+#include "image.h"
+
+uint8_t imageNum = 0;
+uint8_t infoNum = 0;
+uint32_t ImageAddress = 2304000; //Frame 7
+
+iImage* imageList[255] = NULL;
+iInfo* infoList[255] = NULL;
+
+/*  findID
+ *    Helper Function for Finding an ID
+ *    	On Success Returns Index
+ *    	On Failure Returns -1
+ */
+int findID(uint32_t ID)
+{
+	int i;
+	int comp = 0;
+
+	for (i=index+1; i < infoNum && !comp; ++i)
+		comp = (imageList[i].ID == ID);
+
+	return (comp ? i-1 : -1);
+}
+
+/*  findFrame
+ *    Helper Function Next Image on Frame
+ *    Can be reentrant with index arg
+ *    	On Success Returns Index
+ *    	On Failure Returns -1
+ */
+int findFrame(uint8_t frame, uint32_t index)
+{
+	int i;
+	int comp = 0;
+
+	for (i=index+1; i < infoNum && !comp; ++i)
+		comp = (imageList[i].frame == frame);
+
+	return (comp ? i-1 : -1);
+}
+
+/*  findInfo
+ *    Helper Function for Finding if an Image
+ *    has Already been Loaded into Memory
+ *    	On Success Returns Index
+ *    	On Failure Returns -1
+ */
+int findInfo(const char fileName[8])
+{
+	int i;
+	int comp = 0;
+
+	for (i=0; i < infoNum && !comp; ++i)
+		comp = (c_strcmp(infoList[i].fileName, fileName) == 0);
+
+	return (comp ? i-1 : -1);
+}
+
+/*  createImage
+ *    Registers an Image
+ *    If file is not on ram it is loaded in
+ *    returns:
+ *      re == 0 :  File Could Not Be Loaded
+ *      re == -1: Failure to Allocate Memory
+ *      re > 0  : ID of Image
+ */
+uint32_t createImage(const char fileName[8], const char fileExt[3], const iImage* info)
+{
+	int i;
+	iImage* imageC = NULL;
+	iInfo* infoC = NULL;
+	bitmapHeader header;
+
+	/* Didn't find Image */
+	if ( (i =findInfo(fileName)) == -1){
+		if (loadBitmap(fileName, fileExt, header))
+			return 0;
+
+		infoC = malloc(sizeof(iInfo));
+		if (infoC == NULL)
+			return -1;
+
+		/* Populate New Image File Info */
+		c_strcpy(infoC->fileName, fileName);
+		infoC->cRes = header.pixelResolution;
+		infoC->size = header.size/(16/header.pixelResolution);
+		infoC->height = header.height;
+		infoC->width = header.width/header.pixelResolution;
+		infoC->address = ImageAddress;
+		ImageAddress += infoC->size;
+
+		/* append new info */
+		iImage[infoNum++] = infoC;
+	}
+	else{
+		infoC = iImage[i];
+	}
+
+	imageC = malloc(sizeof(iImage));
+	if (imageC == NULL)
+		return -1;
+
+	/* Populate New Image */
+	imageC->info = infoC;
+	imageC->x = 0;
+	imageC->y = 0;
+	imageC->layer = 0;
+	imageC->frame = 0;
+	imageC->scale = 0;
+
+	imageList[imageNum++] = imageC;
+	imageC->ID = imageNum;
+
+	if (info != NULL)
+		info = infoC;
+
+	return imageC.ID;
+}
+uint32_t deleteImage(uint32_t ID)
+{
+	return 0;
+}
+
+void deleteAllImage()
+{
+
+}
+void closeImage()
+{
+
+}
+
+/*  displayImage
+ *    Displays a Image if ID matches
+ *    an existing image
+ *    returns:
+ *              0: Success
+ *             -1: ID Not Found
+ */
+uint32_t displayImage(uint32_t ID)
+{
+	int index;
+	uint16_t pixel;
+	if ((index = findID(ID)) == -1)
+		return index;
+
+	if (imageList[index]->scale != 0)
+	{
+		for (i=0; i < imageList[index].size; ++i){
+				pixel = IORD( NEW_SDRAM_CONTROLLER_0_BASE, address + i*(fInfo.width>>4) );
+				for (j=0; j<CHARWIDTH; ++j ){
+					if ( (row<<j ) &0x8000){
+						IOWR(NEW_SDRAM_CONTROLLER_0_BASE, frameAddr + xyLocation(j,i), fontCursor.color);
+						if (j > kern)
+							kern = j;
+					}
+				}
+			}
+	}
+
+
+	return 0;
+}
+void displayFrameImage(uint8_t frame)
+{
+
+}
+
+uint32_t setLayerImage(uint32_t ID, uint8_t layer)
+{
+	return 0;
+}
+uint32_t setScaleImage(uint32_t ID, uint8_t scale)
+{
+	return 0;
+}
+uint32_t setFrame(uint32_t ID, uint8_t frame)
+{
+	return 0;
+}
+uint32_t moveImage(uint32_t ID, uint16_t x, uint16_t y)
+{
+	return 0;
+}
+
+uint32_t getInfoImage(uint32_t ID, const iImage* image)
+{
+	return 0;
+}

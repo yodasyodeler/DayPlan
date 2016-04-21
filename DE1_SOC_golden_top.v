@@ -215,6 +215,7 @@ wire [63:0] dataRegBus;
 		  .i2c_rst                           (GPIO_1[32]),                           //                         i2c.rst
         .i2c_sda                           (GPIO_1[35]),                           //                            .sda
         .i2c_sclk                          (GPIO_1[34]),                         //                            .sclk
+		  .i2c_touch                         (GPIO_1[33]),
 		  
 		  .lcd_lcd_cs                        (GPIO_0[27]),                        //                         lcd.lcd_cs
         .lcd_lcd_data                      (GPIO_0[23:0]),                      //                            .lcd_data
@@ -241,6 +242,8 @@ wire [63:0] dataRegBus;
 //		.dataOut(GPIO_0[23:0]),
 //		.frame_sync(frame_sync)
 //	);
+
+
 	 
 
 

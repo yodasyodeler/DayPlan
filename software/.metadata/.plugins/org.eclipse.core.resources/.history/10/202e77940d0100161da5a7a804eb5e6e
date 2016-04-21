@@ -1,0 +1,13 @@
+#ifndef BITMAPSD_H_
+#define BITMAPSD_H_
+
+
+#include "io.h"
+#include "system.h"
+#include "common.h"
+#include "FAT16SD.h"
+
+
+int initBitmapRGB16( uint32_t address);
+
+#endif

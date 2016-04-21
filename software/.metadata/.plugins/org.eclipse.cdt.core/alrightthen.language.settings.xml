@@ -1345,6 +1345,34 @@
 			</provider>
 			<provider id="altera.tool.Nios2GCCBuildCommandParser">
 				<language id="org.eclipse.cdt.core.gcc">
+					<resource project-relative-path="bitmapSD.c">
+						<entry kind="includePath" name="/alrightthen_bsp/HAL/inc">
+							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
+						</entry>
+						<entry kind="includePath" name="/alrightthen_bsp">
+							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
+						</entry>
+						<entry kind="includePath" name="/alrightthen_bsp/drivers/inc">
+							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
+						</entry>
+						<entry kind="macro" name="ALT_NO_INSTRUCTION_EMULATION" value=""/>
+						<entry kind="macro" name="ALT_SINGLE_THREADED" value=""/>
+						<entry kind="macro" name="__hal__" value=""/>
+					</resource>
+					<resource project-relative-path="fontWriterSD.c">
+						<entry kind="includePath" name="/alrightthen_bsp/HAL/inc">
+							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
+						</entry>
+						<entry kind="includePath" name="/alrightthen_bsp">
+							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
+						</entry>
+						<entry kind="includePath" name="/alrightthen_bsp/drivers/inc">
+							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
+						</entry>
+						<entry kind="macro" name="ALT_NO_INSTRUCTION_EMULATION" value=""/>
+						<entry kind="macro" name="ALT_SINGLE_THREADED" value=""/>
+						<entry kind="macro" name="__hal__" value=""/>
+					</resource>
 					<resource project-relative-path="fontWriterSPI.c">
 						<entry kind="includePath" name="/alrightthen_bsp/HAL/inc">
 							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
@@ -1360,6 +1388,20 @@
 						<entry kind="macro" name="__hal__" value=""/>
 					</resource>
 					<resource project-relative-path="SDCardSPI.c">
+						<entry kind="includePath" name="/alrightthen_bsp/HAL/inc">
+							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
+						</entry>
+						<entry kind="includePath" name="/alrightthen_bsp">
+							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
+						</entry>
+						<entry kind="includePath" name="/alrightthen_bsp/drivers/inc">
+							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
+						</entry>
+						<entry kind="macro" name="ALT_NO_INSTRUCTION_EMULATION" value=""/>
+						<entry kind="macro" name="ALT_SINGLE_THREADED" value=""/>
+						<entry kind="macro" name="__hal__" value=""/>
+					</resource>
+					<resource project-relative-path="image.c">
 						<entry kind="includePath" name="/alrightthen_bsp/HAL/inc">
 							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
 						</entry>
@@ -1500,6 +1542,20 @@
 						<entry kind="macro" name="__hal__" value=""/>
 					</resource>
 					<resource project-relative-path="TouchI2C.c">
+						<entry kind="includePath" name="/alrightthen_bsp/HAL/inc">
+							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
+						</entry>
+						<entry kind="includePath" name="/alrightthen_bsp">
+							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
+						</entry>
+						<entry kind="includePath" name="/alrightthen_bsp/drivers/inc">
+							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
+						</entry>
+						<entry kind="macro" name="ALT_NO_INSTRUCTION_EMULATION" value=""/>
+						<entry kind="macro" name="ALT_SINGLE_THREADED" value=""/>
+						<entry kind="macro" name="__hal__" value=""/>
+					</resource>
+					<resource project-relative-path="clock.c">
 						<entry kind="includePath" name="/alrightthen_bsp/HAL/inc">
 							<flag value="VALUE_WORKSPACE_PATH|RESOLVED"/>
 						</entry>

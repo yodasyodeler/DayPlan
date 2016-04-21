@@ -1,0 +1,140 @@
+#include "image.h"
+
+uint32_t imageNum = 0;
+uint32_t infoNum = 0;
+uint32_t ImageAddress = 0;
+
+iImage* imageList = NULL;
+iInfo* infoList = NULL;
+
+/*  findID
+ *    Helper Function for Finding an ID
+ *    	On Success Returns Index
+ *    	On Failure Returns -1
+ */
+int findID(uint32_t ID)
+{
+	int i;
+	int comp = 0;
+
+	for (i=index+1; i < infoNum && !comp; ++i)
+		comp = (imageList[i].ID == ID);
+
+	return (comp ? i-1 : -1);
+}
+
+/*  findFrame
+ *    Helper Function Next Image on Frame
+ *    Can be reentrant with index arg
+ *    	On Success Returns Index
+ *    	On Failure Returns -1
+ */
+int findFrame(uint8_t frame, uint32_t index)
+{
+	int i;
+	int comp = 0;
+
+	for (i=index+1; i < infoNum && !comp; ++i)
+		comp = (imageList[i].frame == frame);
+
+	return (comp ? i-1 : -1);
+}
+
+/*  findInfo
+ *    Helper Function for Finding if an Image
+ *    has Already been Loaded into Memory
+ *    	On Success Returns Index
+ *    	On Failure Returns -1
+ */
+int findInfo(const char fileName[8])
+{
+	int i;
+	int comp = 0;
+
+	for (i=0; i < infoNum && !comp; ++i)
+		comp = (c_strcmp(infoList[i].fileName, fileName) == 0);
+
+	return (comp ? i-1 : -1);
+}
+
+/*  createImage
+ *    Registers an Image
+ *    If file is not on ram it is loaded in
+ *    returns:
+ *      re == 0 :  File Could Not Be Loaded
+ *      re == -1: Failure to Allocate Memory
+ *      re > 0  : ID of Image
+ */
+uint32_t createImage(const char fileName[8], const char fileExt[3], const iImage* info)
+{
+	iImage* imageC = NULL;
+	iInfo* infoC = NULL;
+	bitmapHeader header;
+
+	/* Didn't find Image */
+	if (findInfo(fileName) == -1)
+	{
+		if (loadBitmap(fileName, fileExt, header))
+			return 0;
+
+		infoC = malloc(sizeof(iInfo));
+		if (infoC == NULL)
+			return -1;
+
+		c_strcpy(infoC->fileName, fileName);
+		infoC->cRes = header.pixelResolution;
+		infoC->size = header.size/(16/header.pixelResolution);
+		infoC->height = header.height;
+		infoC->width = header.width/header.pixelResolution;
+		infoC->address = ImageAddress;
+		ImageAddress += infoC->size;
+	}
+
+
+
+	return imageC.ID;
+}
+uint32_t deleteImage(uint32_t ID)
+{
+	return 0;
+}
+
+void deleteAllImage()
+{
+
+}
+void closeImage()
+{
+
+}
+
+uint32_t displayImage(uint32_t ID)
+{
+	return 0;
+}
+void displayFrameImage(uint8_t frame)
+{
+
+}
+
+uint32_t setLayerImage(uint32_t ID, uint8_t layer)
+{
+	return 0;
+}
+uint32_t setScaleImage(uint32_t ID, uint8_t scale)
+{
+	return 0;
+}
+uint32_t setFrame(uint32_t ID, uint8_t frame)
+{
+	return 0;
+}
+uint32_t moveImage(uint32_t ID, uint16_t x, uint16_t y)
+{
+	return 0;
+}
+
+uint32_t getInfoImage(uint32_t ID, const iImage* image)
+{
+	return 0;
+}

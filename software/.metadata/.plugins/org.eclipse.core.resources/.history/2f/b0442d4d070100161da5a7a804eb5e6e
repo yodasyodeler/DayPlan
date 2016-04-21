@@ -1,0 +1,46 @@
+#include "clock.h"
+
+static int cFileSize = 0;
+static int cBitmapSize = 0;
+static int cBitmapPos = 0;
+static int cBitmapWidth = 0;
+static int cBitmapHeight = 0;
+
+int initClock(char fileName[8], char fileExt[3])
+{
+	int ramIndex = 0;
+		int i = 0;
+
+		if (sdOpen(fileName, fileExt) != 0)
+			return -1;
+
+		if (sdBuffer[0] != 0x42 || sdBuffer[1] != 0x4D)
+			return -2;
+		else{
+			cFileSize = grabWord(sdBuffer, 2);
+			cBitmapPos  = grabWord(sdBuffer, 10);
+			cBitmapSize = cFileSize - cBitmapPos;
+			cBitmapHeight = grabWord(sdBuffer, 22);
+			cBitmapWidth  = grabWord(sdBuffer, 18);
+
+
+		for(i=fBitmapPos; i<bData._sectorSize; i+=2){
+			IOWR(NEW_SDRAM_CONTROLLER_0_BASE, FONTADDR + (32*((fBitmapHeight) - ((ramIndex/32)+1))) + (ramIndex%32), ((sdBuffer[i])<<8)|(sdBuffer[i+1]) );
+			ramIndex += 2;
+		}
+		while (sdReadNext() == 0){
+			for(i=0;  i <bData._sectorSize && ramIndex < fBitmapSize ; i+=2){
+				IOWR(NEW_SDRAM_CONTROLLER_0_BASE, FONTADDR + (32*((fBitmapHeight) - ((ramIndex/32)+1))) + (ramIndex%32), ((sdBuffer[i])<<8)|(sdBuffer[i+1]) );
+				ramIndex += 2;
+			}
+		}
+}
+return 0;
+
+}
+
+void displayClock(uint32_t frame)
+{
+
+
+}

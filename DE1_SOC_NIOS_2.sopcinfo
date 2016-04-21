@@ -5,11 +5,11 @@
  version="1.0"
  fabric="QSYS">
  <!-- Format version 15.0 145 (Future versions may contain additional information.) -->
- <!-- 2016.04.08.16:15:31 -->
+ <!-- 2016.04.20.17:41:10 -->
  <!-- A collection of modules and connections -->
  <parameter name="AUTO_GENERATION_ID">
   <type>java.lang.Integer</type>
-  <value>1460157331</value>
+  <value>1461199270</value>
   <derived>false</derived>
   <enabled>true</enabled>
   <visible>false</visible>
@@ -1775,6 +1775,12 @@ parameters are a RESULT of the module parameters. -->
    </clockDomainMember>
    <clockDomainMember>
     <isBridge>false</isBridge>
+    <moduleName>i2c_AVALON_0</moduleName>
+    <slaveName>clock</slaveName>
+    <name>i2c_AVALON_0.clock</name>
+   </clockDomainMember>
+   <clockDomainMember>
+    <isBridge>false</isBridge>
     <moduleName>pll</moduleName>
     <slaveName>refclk</slaveName>
     <name>pll.refclk</name>
@@ -3437,7 +3443,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="dataSlaveMapParam">
    <type>java.lang.String</type>
-   <value><![CDATA[<address-map><slave name='new_sdram_controller_0.s1' start='0x0' end='0x4000000' /><slave name='onchip_memory2.s1' start='0x4040000' end='0x4072000' /><slave name='cpu.debug_mem_slave' start='0x4080800' end='0x4081000' /><slave name='dma_0.control_port_slave' start='0x4081000' end='0x4081020' /><slave name='timer_0.s1' start='0x4081020' end='0x4081040' /><slave name='SPI_AVALON_SD_0.sd' start='0x4081040' end='0x4081050' /><slave name='LCDFrameBuffer_0.s0' start='0x4081050' end='0x4081060' /><slave name='i2c_AVALON_0.i2c' start='0x4081060' end='0x4081070' /><slave name='jtag_uart.avalon_jtag_slave' start='0x4081070' end='0x4081078' /></address-map>]]></value>
+   <value><![CDATA[<address-map><slave name='new_sdram_controller_0.s1' start='0x0' end='0x4000000' /><slave name='onchip_memory2.s1' start='0x4040000' end='0x4072000' /><slave name='cpu.debug_mem_slave' start='0x4080800' end='0x4081000' /><slave name='timer_0.s1' start='0x4081000' end='0x4081020' /><slave name='dma_0.control_port_slave' start='0x4081020' end='0x4081040' /><slave name='i2c_AVALON_0.i2c' start='0x4081040' end='0x4081050' /><slave name='SPI_AVALON_SD_0.sd' start='0x4081050' end='0x4081060' /><slave name='LCDFrameBuffer_0.s0' start='0x4081060' end='0x4081070' /><slave name='jtag_uart.avalon_jtag_slave' start='0x4081070' end='0x4081078' /></address-map>]]></value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -3566,7 +3572,7 @@ the requested settings for a module instance. -->
   </parameter>
   <parameter name="internalIrqMaskSystemInfo">
    <type>long</type>
-   <value>7</value>
+   <value>15</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>false</visible>
@@ -4116,7 +4122,7 @@ parameters are a RESULT of the module parameters. -->
     <moduleName>dma_0</moduleName>
     <slaveName>control_port_slave</slaveName>
     <name>dma_0.control_port_slave</name>
-    <baseAddress>67637248</baseAddress>
+    <baseAddress>67637280</baseAddress>
     <span>32</span>
    </memoryBlock>
    <memoryBlock>
@@ -4132,7 +4138,7 @@ parameters are a RESULT of the module parameters. -->
     <moduleName>i2c_AVALON_0</moduleName>
     <slaveName>i2c</slaveName>
     <name>i2c_AVALON_0.i2c</name>
-    <baseAddress>67637344</baseAddress>
+    <baseAddress>67637312</baseAddress>
     <span>16</span>
    </memoryBlock>
    <memoryBlock>
@@ -4140,7 +4146,7 @@ parameters are a RESULT of the module parameters. -->
     <moduleName>LCDFrameBuffer_0</moduleName>
     <slaveName>s0</slaveName>
     <name>LCDFrameBuffer_0.s0</name>
-    <baseAddress>67637328</baseAddress>
+    <baseAddress>67637344</baseAddress>
     <span>16</span>
    </memoryBlock>
    <memoryBlock>
@@ -4164,7 +4170,7 @@ parameters are a RESULT of the module parameters. -->
     <moduleName>timer_0</moduleName>
     <slaveName>s1</slaveName>
     <name>timer_0.s1</name>
-    <baseAddress>67637280</baseAddress>
+    <baseAddress>67637248</baseAddress>
     <span>32</span>
    </memoryBlock>
    <memoryBlock>
@@ -4172,7 +4178,7 @@ parameters are a RESULT of the module parameters. -->
     <moduleName>SPI_AVALON_SD_0</moduleName>
     <slaveName>sd</slaveName>
     <name>SPI_AVALON_SD_0.sd</name>
-    <baseAddress>67637312</baseAddress>
+    <baseAddress>67637328</baseAddress>
     <span>16</span>
    </memoryBlock>
   </interface>
@@ -4547,6 +4553,13 @@ parameters are a RESULT of the module parameters. -->
     <width>32</width>
     <role>irq</role>
    </port>
+   <interrupt>
+    <isBridge>false</isBridge>
+    <moduleName>i2c_AVALON_0</moduleName>
+    <slaveName>interrupt_sender</slaveName>
+    <name>i2c_AVALON_0.interrupt_sender</name>
+    <interruptNumber>3</interruptNumber>
+   </interrupt>
    <interrupt>
     <isBridge>false</isBridge>
     <moduleName>jtag_uart</moduleName>
@@ -7046,6 +7059,89 @@ parameters are a RESULT of the module parameters. -->
     <direction>Bidir</direction>
     <width>1</width>
     <role>sclk</role>
+   </port>
+   <port>
+    <name>i2c_touch</name>
+    <direction>Input</direction>
+    <width>1</width>
+    <role>touch</role>
+   </port>
+  </interface>
+  <interface name="interrupt_sender" kind="interrupt_sender" version="15.0">
+   <!-- The connection points exposed by a module instance for the
+particular module parameters. Connection points and their
+parameters are a RESULT of the module parameters. -->
+   <parameter name="associatedAddressablePoint">
+    <type>com.altera.entityinterfaces.IConnectionPoint</type>
+    <value></value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="associatedClock">
+    <type>java.lang.String</type>
+    <value>clock</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>false</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="associatedReset">
+    <type>java.lang.String</type>
+    <value>reset</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>false</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="bridgedReceiverOffset">
+    <type>java.lang.Integer</type>
+    <value></value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="bridgesToReceiver">
+    <type>com.altera.entityinterfaces.IConnectionPoint</type>
+    <value></value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="irqScheme">
+    <type>com.altera.sopcmodel.interrupt.InterruptConnectionPoint$EIrqScheme</type>
+    <value>NONE</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>false</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="deviceFamily">
+    <type>java.lang.String</type>
+    <value>UNKNOWN</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <parameter name="generateLegacySim">
+    <type>boolean</type>
+    <value>false</value>
+    <derived>false</derived>
+    <enabled>true</enabled>
+    <visible>true</visible>
+    <valid>true</valid>
+   </parameter>
+   <type>interrupt</type>
+   <isStart>false</isStart>
+   <port>
+    <name>i2c_irq</name>
+    <direction>Output</direction>
+    <width>1</width>
+    <role>irq</role>
    </port>
   </interface>
  </module>
@@ -13528,12 +13624,6 @@ parameters are a RESULT of the module parameters. -->
     <slaveName>clock</slaveName>
     <name>SPI_AVALON_SD_0.clock</name>
    </clockDomainMember>
-   <clockDomainMember>
-    <isBridge>false</isBridge>
-    <moduleName>i2c_AVALON_0</moduleName>
-    <slaveName>clock</slaveName>
-    <name>i2c_AVALON_0.clock</name>
-   </clockDomainMember>
   </interface>
   <interface name="outclk1" kind="clock_source" version="15.0">
    <!-- The connection points exposed by a module instance for the
@@ -14505,7 +14595,7 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <parameter name="baseAddress">
    <type>java.math.BigInteger</type>
-   <value>0x04081000</value>
+   <value>0x04081020</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -14607,7 +14697,7 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <parameter name="baseAddress">
    <type>java.math.BigInteger</type>
-   <value>0x04081060</value>
+   <value>0x04081040</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -14658,7 +14748,7 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <parameter name="baseAddress">
    <type>java.math.BigInteger</type>
-   <value>0x04081050</value>
+   <value>0x04081060</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -14811,7 +14901,7 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <parameter name="baseAddress">
    <type>java.math.BigInteger</type>
-   <value>0x04081020</value>
+   <value>0x04081000</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -14862,7 +14952,7 @@ parameters are a RESULT of the module parameters. -->
   </parameter>
   <parameter name="baseAddress">
    <type>java.math.BigInteger</type>
-   <value>0x04081040</value>
+   <value>0x04081050</value>
    <derived>false</derived>
    <enabled>true</enabled>
    <visible>true</visible>
@@ -15183,6 +15273,33 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>clock</endConnectionPoint>
  </connection>
  <connection
+   name="clk_0.clk/i2c_AVALON_0.clock"
+   kind="clock"
+   version="15.0"
+   start="clk_0.clk"
+   end="i2c_AVALON_0.clock">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>clk_0</startModule>
+  <startConnectionPoint>clk</startConnectionPoint>
+  <endModule>i2c_AVALON_0</endModule>
+  <endConnectionPoint>clock</endConnectionPoint>
+ </connection>
+ <connection
    name="clk_0.clk/pll.refclk"
    kind="clock"
    version="15.0"
@@ -15345,11 +15462,19 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>clock</endConnectionPoint>
  </connection>
  <connection
-   name="pll.outclk0/i2c_AVALON_0.clock"
-   kind="clock"
+   name="cpu.irq/i2c_AVALON_0.interrupt_sender"
+   kind="interrupt"
    version="15.0"
-   start="pll.outclk0"
-   end="i2c_AVALON_0.clock">
+   start="cpu.irq"
+   end="i2c_AVALON_0.interrupt_sender">
+  <parameter name="irqNumber">
+   <type>int</type>
+   <value>3</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
   <parameter name="deviceFamily">
    <type>java.lang.String</type>
    <value>UNKNOWN</value>
@@ -15366,10 +15491,10 @@ parameters are a RESULT of the module parameters. -->
    <visible>true</visible>
    <valid>true</valid>
   </parameter>
-  <startModule>pll</startModule>
-  <startConnectionPoint>outclk0</startConnectionPoint>
+  <startModule>cpu</startModule>
+  <startConnectionPoint>irq</startConnectionPoint>
   <endModule>i2c_AVALON_0</endModule>
-  <endConnectionPoint>clock</endConnectionPoint>
+  <endConnectionPoint>interrupt_sender</endConnectionPoint>
  </connection>
  <connection
    name="cpu.irq/jtag_uart.irq"
@@ -15612,33 +15737,6 @@ parameters are a RESULT of the module parameters. -->
   <endConnectionPoint>reset</endConnectionPoint>
  </connection>
  <connection
-   name="clk_0.clk_reset/i2c_AVALON_0.reset"
-   kind="reset"
-   version="15.0"
-   start="clk_0.clk_reset"
-   end="i2c_AVALON_0.reset">
-  <parameter name="deviceFamily">
-   <type>java.lang.String</type>
-   <value>UNKNOWN</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <parameter name="generateLegacySim">
-   <type>boolean</type>
-   <value>false</value>
-   <derived>false</derived>
-   <enabled>true</enabled>
-   <visible>true</visible>
-   <valid>true</valid>
-  </parameter>
-  <startModule>clk_0</startModule>
-  <startConnectionPoint>clk_reset</startConnectionPoint>
-  <endModule>i2c_AVALON_0</endModule>
-  <endConnectionPoint>reset</endConnectionPoint>
- </connection>
- <connection
    name="clk_0.clk_reset/timer_0.reset"
    kind="reset"
    version="15.0"
@@ -15690,6 +15788,33 @@ parameters are a RESULT of the module parameters. -->
   <startModule>clk_0</startModule>
   <startConnectionPoint>clk_reset</startConnectionPoint>
   <endModule>dma_0</endModule>
+  <endConnectionPoint>reset</endConnectionPoint>
+ </connection>
+ <connection
+   name="clk_0.clk_reset/i2c_AVALON_0.reset"
+   kind="reset"
+   version="15.0"
+   start="clk_0.clk_reset"
+   end="i2c_AVALON_0.reset">
+  <parameter name="deviceFamily">
+   <type>java.lang.String</type>
+   <value>UNKNOWN</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <parameter name="generateLegacySim">
+   <type>boolean</type>
+   <value>false</value>
+   <derived>false</derived>
+   <enabled>true</enabled>
+   <visible>true</visible>
+   <valid>true</valid>
+  </parameter>
+  <startModule>clk_0</startModule>
+  <startConnectionPoint>clk_reset</startConnectionPoint>
+  <endModule>i2c_AVALON_0</endModule>
   <endConnectionPoint>reset</endConnectionPoint>
  </connection>
  <connection
@@ -15883,7 +16008,7 @@ parameters are a RESULT of the module parameters. -->
   <version>15.0</version>
  </plugin>
  <plugin>
-  <instanceCount>3</instanceCount>
+  <instanceCount>4</instanceCount>
   <name>interrupt_sender</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IMutableConnectionPoint</subtype>
@@ -15963,7 +16088,7 @@ parameters are a RESULT of the module parameters. -->
   <version>15.0</version>
  </plugin>
  <plugin>
-  <instanceCount>3</instanceCount>
+  <instanceCount>4</instanceCount>
   <name>interrupt</name>
   <type>com.altera.entityinterfaces.IElementClass</type>
   <subtype>com.altera.entityinterfaces.IConnection</subtype>

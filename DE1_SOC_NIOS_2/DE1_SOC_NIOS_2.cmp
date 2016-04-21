@@ -4,6 +4,7 @@
 			i2c_rst                           : out   std_logic;                                        -- rst
 			i2c_sda                           : inout std_logic                     := 'X';             -- sda
 			i2c_sclk                          : inout std_logic                     := 'X';             -- sclk
+			i2c_touch                         : in    std_logic                     := 'X';             -- touch
 			lcd_lcd_cs                        : out   std_logic;                                        -- lcd_cs
 			lcd_lcd_data                      : out   std_logic_vector(23 downto 0);                    -- lcd_data
 			lcd_lcd_dc                        : out   std_logic;                                        -- lcd_dc

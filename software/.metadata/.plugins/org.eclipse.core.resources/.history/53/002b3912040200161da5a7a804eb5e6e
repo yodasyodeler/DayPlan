@@ -1,0 +1,62 @@
+#ifndef IMAGE_H_
+#define IMAGE_H_
+
+#include "common.h"
+#include "bitmapSD.h"
+
+/* iInfo
+ *   size:    Half-Word(16bit) Size
+ *   cRes:    Color Resolution (MONO1, RGB16)
+ *   width:   Image Half-Word Width
+ *   height:  Image Pixel Height
+ *   address: SDRAM Storage Location
+ */
+typedef struct  _iInfo{
+	uint32_t size;
+	uint8_t cRes;
+	uint16_t width;
+	uint16_t height;
+	uint32_t address;
+} iInfo;
+
+/*  iImage
+ *    ID:    Unique Image Number for Identification
+ *    x:     X position of Top Left Corner of Image In (RGB16)Pixel from Top Left Corner of Frame
+ *    y:     Y position of Top Left Corner of Image In (RGB16)Pixel from Top Left Corner of Frame
+ *    scale: Multiplier of Current Scale
+ *             XXXX_0000: Don't Display
+ *             XXXX_0001: 0.25x Quarter Size Height
+ *             XXXX_0010: 0.5x  Half Size Height
+ *             XXXX_0011: 1x    Normal Size Height
+ *             XXXX_0101: 2x    Double Size Height
+ *             XXXX_0110: 4x    Four Times Size Height
+ *             XXXX_0111: 8x    Eight Times Size Height
+ *             XXXX_1XXX: reserved
+ *
+ *             0000_XXXX: Don't Display
+ *             0001_XXXX: 0.25x Quarter Size Width
+ *             0010_XXXX: 0.5x  Half Size Width
+ *             0011_XXXX: 1x    Normal Size Width
+ *             0101_XXXX: 2x    Double Size Width
+ *             0110_XXXX: 4x    Four Times Size Width
+ *             0111_XXXX: 8x    Eight Times Size Width
+ *             1XXX_XXXX: reserved
+ *             Default size is 0011_0011 Normal Height Width
+ *             Scaling Originates From The Top Left Of The Image
+ *    frame: Screen Frame to Display Image on, for Buffering Images on RAM
+ *    layer: Determines Order of Images being displayed For displayFrameImage()
+ *           Defaults to layer 0, not specifying layer on overlapping images
+ *           creates undefined behavior of which image is on top
+ */
+typedef struct _iImage{
+	uint32_t ID;
+	iInfo* info;
+	uint16_t x;
+	uint16_t y;
+	uint8_t scale;
+	uint8_t frame;
+	uint8_t layer;
+} iImage;
+
+
+#endif /* IMAGE_H_ */

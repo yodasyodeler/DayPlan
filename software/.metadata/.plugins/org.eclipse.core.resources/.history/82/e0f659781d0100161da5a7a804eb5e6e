@@ -1,0 +1,74 @@
+
+#include "bitmapSD.h"
+
+static bitmapHeader bInfo;
+
+
+int loadBitmap( char fileName[8], char fileExt[3], uint32_t address, bitmapHeader* info)
+{
+
+	int ramIndex = 0;
+	int bitmapRowLen = 0;
+	int i = 0;
+
+	if (sdOpen("DIGITSEG", "BMP") != 0)
+		return -1;
+
+	if (sdBuffer[0] != 0x42 || sdBuffer[1] != 0x4D)
+		return -2;
+
+	bInfo.fileSize = grabWord(sdBuffer, 2);
+	bInfo.startPos  = grabWord(sdBuffer, 10);
+	bInfo.size = bInfo.fileSize - bInfo.startPos;
+	bInfo.height = grabWord(sdBuffer, 22);
+	bInfo.width  = grabWord(sdBuffer, 18);
+	bInfo.pixelResolution = grabHalf(sdBuffer, 28);
+
+	if (bInfo.pixelResolution == 1){
+		/* Account for padding */
+		bitmapRowLen = (((bInfo.pixelResolution*bInfo.width)+31)/32)*4;
+
+		for(i=bInfo.startPos; i<bData._sectorSize && ramIndex < bInfo.size; i+=2){
+			IOWR(NEW_SDRAM_CONTROLLER_0_BASE, address + (32*(bInfo.height - ((ramIndex/32)+1))) + (ramIndex%32), ((sdBuffer[i])<<8)|(sdBuffer[i+1]) );
+			ramIndex += 2;
+		}
+		while (sdReadNext() == 0){
+			for(i=0;  i <bData._sectorSize && ramIndex < bInfo.size ; i+=2){
+				IOWR(NEW_SDRAM_CONTROLLER_0_BASE, address + (32*((bInfo.height) - ((ramIndex/32)+1))) + (ramIndex%32), ((sdBuffer[i])<<8)|(sdBuffer[i+1]) );
+				ramIndex += 2;
+			}
+		}
+	}
+	else if (bInfo.pixelResolution == 16){
+		for(i=bInfo.startPos; i<bData._sectorSize && ramIndex < bInfo.size; i+=2){
+					IOWR(NEW_SDRAM_CONTROLLER_0_BASE, address + (32*(bInfo.height - ((ramIndex/32)+1))) + (ramIndex%32), grabHalf(sdBuffer,i) );
+					ramIndex += 2;
+				}
+				while (sdReadNext() == 0){
+					for(i=0;  i <bData._sectorSize && ramIndex < bInfo.size ; i+=2){
+						IOWR(NEW_SDRAM_CONTROLLER_0_BASE, address + (32*((bInfo.height) - ((ramIndex/32)+1))) + (ramIndex%32), grabHalf(sdBuffer,i) );
+						ramIndex += 2;
+					}
+				}
+	}
+	else if (bInfo.pixelResolution == 32){
+		for(i=bInfo.startPos; i<bData._sectorSize && ramIndex < bInfo.size; i+=2){
+			IOWR(NEW_SDRAM_CONTROLLER_0_BASE, address + (32*(bInfo.height - ((ramIndex/32)+1))) + (ramIndex%32), ((sdBuffer[i])<<8)|(sdBuffer[i+1]) );
+			ramIndex += 2;
+		}
+		while (sdReadNext() == 0){
+			for(i=0;  i <bData._sectorSize && ramIndex < bInfo.size ; i+=2){
+				IOWR(NEW_SDRAM_CONTROLLER_0_BASE, address + (32*((bInfo.height) - ((ramIndex/32)+1))) + (ramIndex%32), ((sdBuffer[i])<<8)|(sdBuffer[i+1]) );
+				ramIndex += 2;
+			}
+		}
+	}
+	else{
+		return - 3;
+	}
+
+	if (info != NULL)
+		*info = bInfo;
+
+	return 0;
+}

@@ -1,8 +1,5 @@
 	DE1_SOC_NIOS_2 u0 (
 		.clk_clk                           (<connected-to-clk_clk>),                           //                         clk.clk
-		.i2c_rst                           (<connected-to-i2c_rst>),                           //                         i2c.rst
-		.i2c_sda                           (<connected-to-i2c_sda>),                           //                            .sda
-		.i2c_sclk                          (<connected-to-i2c_sclk>),                          //                            .sclk
 		.lcd_lcd_cs                        (<connected-to-lcd_lcd_cs>),                        //                         lcd.lcd_cs
 		.lcd_lcd_data                      (<connected-to-lcd_lcd_data>),                      //                            .lcd_data
 		.lcd_lcd_dc                        (<connected-to-lcd_lcd_dc>),                        //                            .lcd_dc
@@ -22,6 +19,10 @@
 		.sd_sd_clk                         (<connected-to-sd_sd_clk>),                         //                            .sd_clk
 		.sd_sd_di                          (<connected-to-sd_sd_di>),                          //                            .sd_di
 		.sd_sd_do                          (<connected-to-sd_sd_do>),                          //                            .sd_do
-		.sdram_clk_clk                     (<connected-to-sdram_clk_clk>)                      //                   sdram_clk.clk
+		.sdram_clk_clk                     (<connected-to-sdram_clk_clk>),                     //                   sdram_clk.clk
+		.i2c_rst                           (<connected-to-i2c_rst>),                           //                         i2c.rst
+		.i2c_sda                           (<connected-to-i2c_sda>),                           //                            .sda
+		.i2c_sclk                          (<connected-to-i2c_sclk>),                          //                            .sclk
+		.i2c_beginbursttransfer            (<connected-to-i2c_beginbursttransfer>)             //                            .beginbursttransfer
 	);
 
