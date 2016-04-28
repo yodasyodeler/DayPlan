@@ -609,6 +609,14 @@
          type = "String";
       }
    }
+   element DE1_SOC_NIOS_2
+   {
+      datum _originalDeviceFamily
+      {
+         value = "Cyclone V";
+         type = "String";
+      }
+   }
    element LCDFrameBuffer_0
    {
       datum _sortIndex
@@ -694,6 +702,14 @@
       datum baseAddress
       {
          value = "67637312";
+         type = "String";
+      }
+   }
+   element i2c_AVALON_0.reset
+   {
+      datum _tags
+      {
+         value = "";
          type = "String";
       }
    }

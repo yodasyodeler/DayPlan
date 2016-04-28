@@ -2,7 +2,7 @@ set_global_assignment -entity "DE1_SOC_NIOS_2" -library "DE1_SOC_NIOS_2" -name I
 set_global_assignment -entity "DE1_SOC_NIOS_2" -library "DE1_SOC_NIOS_2" -name IP_TOOL_VERSION "15.0"
 set_global_assignment -entity "DE1_SOC_NIOS_2" -library "DE1_SOC_NIOS_2" -name IP_TOOL_ENV "Qsys"
 set_global_assignment -library "DE1_SOC_NIOS_2" -name SOPCINFO_FILE [file join $::quartus(qip_path) "../../DE1_SOC_NIOS_2.sopcinfo"]
-set_global_assignment -entity "DE1_SOC_NIOS_2" -library "DE1_SOC_NIOS_2" -name SLD_INFO "QSYS_NAME DE1_SOC_NIOS_2 HAS_SOPCINFO 1 GENERATION_ID 1461199270"
+set_global_assignment -entity "DE1_SOC_NIOS_2" -library "DE1_SOC_NIOS_2" -name SLD_INFO "QSYS_NAME DE1_SOC_NIOS_2 HAS_SOPCINFO 1 GENERATION_ID 1461820002"
 set_global_assignment -library "DE1_SOC_NIOS_2" -name MISC_FILE [file join $::quartus(qip_path) "../DE1_SOC_NIOS_2.cmp"]
 set_global_assignment -library "DE1_SOC_NIOS_2" -name SLD_FILE [file join $::quartus(qip_path) "DE1_SOC_NIOS_2.regmap"]
 set_global_assignment -library "DE1_SOC_NIOS_2" -name SLD_FILE [file join $::quartus(qip_path) "DE1_SOC_NIOS_2.debuginfo"]
@@ -16,7 +16,7 @@ set_global_assignment -entity "DE1_SOC_NIOS_2" -library "DE1_SOC_NIOS_2" -name I
 set_global_assignment -entity "DE1_SOC_NIOS_2" -library "DE1_SOC_NIOS_2" -name IP_COMPONENT_REPORT_HIERARCHY "On"
 set_global_assignment -entity "DE1_SOC_NIOS_2" -library "DE1_SOC_NIOS_2" -name IP_COMPONENT_INTERNAL "Off"
 set_global_assignment -entity "DE1_SOC_NIOS_2" -library "DE1_SOC_NIOS_2" -name IP_COMPONENT_VERSION "MS4w"
-set_global_assignment -entity "DE1_SOC_NIOS_2" -library "DE1_SOC_NIOS_2" -name IP_COMPONENT_PARAMETER "QVVUT19HRU5FUkFUSU9OX0lE::MTQ2MTE5OTI3MA==::QXV0byBHRU5FUkFUSU9OX0lE"
+set_global_assignment -entity "DE1_SOC_NIOS_2" -library "DE1_SOC_NIOS_2" -name IP_COMPONENT_PARAMETER "QVVUT19HRU5FUkFUSU9OX0lE::MTQ2MTgyMDAwMg==::QXV0byBHRU5FUkFUSU9OX0lE"
 set_global_assignment -entity "DE1_SOC_NIOS_2" -library "DE1_SOC_NIOS_2" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0VfRkFNSUxZ::Q3ljbG9uZSBW::QXV0byBERVZJQ0VfRkFNSUxZ"
 set_global_assignment -entity "DE1_SOC_NIOS_2" -library "DE1_SOC_NIOS_2" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0U=::NUNTRU1BNUYzMUM2::QXV0byBERVZJQ0U="
 set_global_assignment -entity "DE1_SOC_NIOS_2" -library "DE1_SOC_NIOS_2" -name IP_COMPONENT_PARAMETER "QVVUT19ERVZJQ0VfU1BFRURHUkFERQ==::Ng==::QXV0byBERVZJQ0VfU1BFRURHUkFERQ=="

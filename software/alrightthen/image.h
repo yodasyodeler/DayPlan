@@ -5,6 +5,7 @@
 #include "c_stl.h"
 #include "bitmapSD.h"
 #include <stdlib.h>
+#include "c_list.h"
 
 
 /* iInfo
@@ -20,9 +21,17 @@ typedef struct  _iInfo{
 	uint8_t cRes;
 	uint16_t width;
 	uint16_t height;
+	uint16_t padWidth;
 	uint32_t address;
 	char fileName[8];
 } iInfo;
+
+typedef struct _window{
+	uint16_t x0;
+	uint16_t y0;
+	uint16_t x1;
+	uint16_t y1;
+} window;
 
 /*  iImage   *Needs Fixing on Scale*
  *    ID:    Unique Image Number for Identification
@@ -61,7 +70,7 @@ typedef struct _iImage{
 	uint8_t scale;
 	uint8_t frame;
 	uint8_t layer;
-	uint8_t isFont;
+	window* w;
 } iImage;
 
 typedef struct Font_Cursor {
@@ -70,7 +79,7 @@ typedef struct Font_Cursor {
 	uint8_t scale;
 	uint16_t frame;
 	uint16_t color;
-	uint8_t ID;
+	uint32_t ID;
 } FontCursor;
 
 uint32_t createImage(const char fileName[8],const char fileExt[3], iInfo* info);
@@ -89,14 +98,15 @@ uint32_t displayMonochromeImage(uint32_t ID);
 uint32_t displayRGB16Image(uint32_t ID);
 uint32_t displayFastRGB16Image(uint32_t ID);
 
+void setMonoColorImage(uint16_t color);
+
 uint32_t setLayerImage(uint32_t ID, uint8_t layer);
 uint32_t setScaleImage(uint32_t ID, uint8_t scaleX, uint8_t scaleY);
 uint32_t setFrameImage(uint32_t ID, uint8_t frame);
+uint32_t setWindowImage(uint32_t ID, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
 uint32_t moveImage(uint32_t ID, uint16_t x, uint16_t y);
 
 uint32_t getInfoImage(uint32_t ID, const iInfo* info);
-
-
 
 
 #endif

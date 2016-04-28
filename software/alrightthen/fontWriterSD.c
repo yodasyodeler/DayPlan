@@ -246,7 +246,7 @@ int vprints(const char* fmt, uint8_t isKern, va_list args)
 			++re;
 		}
 		if((fontCursor.x+CHARWIDTH) > ROWSIZE){
-			fontCursor.y += CHARHEIGHT;
+			fontCursor.y += CHARHEIGHT*(fontCursor.scale&0xF);
 			fontCursor.x = 0;
 		}
 		++fmt;

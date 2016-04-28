@@ -1,6 +1,10 @@
 	component DE1_SOC_NIOS_2 is
 		port (
 			clk_clk                           : in    std_logic                     := 'X';             -- clk
+			i2c_rst                           : out   std_logic;                                        -- rst
+			i2c_sda                           : inout std_logic                     := 'X';             -- sda
+			i2c_sclk                          : inout std_logic                     := 'X';             -- sclk
+			i2c_touch                         : in    std_logic                     := 'X';             -- touch
 			lcd_lcd_cs                        : out   std_logic;                                        -- lcd_cs
 			lcd_lcd_data                      : out   std_logic_vector(23 downto 0);                    -- lcd_data
 			lcd_lcd_dc                        : out   std_logic;                                        -- lcd_dc
@@ -20,17 +24,17 @@
 			sd_sd_clk                         : out   std_logic;                                        -- sd_clk
 			sd_sd_di                          : out   std_logic;                                        -- sd_di
 			sd_sd_do                          : in    std_logic                     := 'X';             -- sd_do
-			sdram_clk_clk                     : out   std_logic;                                        -- clk
-			i2c_rst                           : out   std_logic;                                        -- rst
-			i2c_sda                           : inout std_logic                     := 'X';             -- sda
-			i2c_sclk                          : inout std_logic                     := 'X';             -- sclk
-			i2c_beginbursttransfer            : in    std_logic                     := 'X'              -- beginbursttransfer
+			sdram_clk_clk                     : out   std_logic                                         -- clk
 		);
 	end component DE1_SOC_NIOS_2;
 
 	u0 : component DE1_SOC_NIOS_2
 		port map (
 			clk_clk                           => CONNECTED_TO_clk_clk,                           --                         clk.clk
+			i2c_rst                           => CONNECTED_TO_i2c_rst,                           --                         i2c.rst
+			i2c_sda                           => CONNECTED_TO_i2c_sda,                           --                            .sda
+			i2c_sclk                          => CONNECTED_TO_i2c_sclk,                          --                            .sclk
+			i2c_touch                         => CONNECTED_TO_i2c_touch,                         --                            .touch
 			lcd_lcd_cs                        => CONNECTED_TO_lcd_lcd_cs,                        --                         lcd.lcd_cs
 			lcd_lcd_data                      => CONNECTED_TO_lcd_lcd_data,                      --                            .lcd_data
 			lcd_lcd_dc                        => CONNECTED_TO_lcd_lcd_dc,                        --                            .lcd_dc
@@ -50,10 +54,6 @@
 			sd_sd_clk                         => CONNECTED_TO_sd_sd_clk,                         --                            .sd_clk
 			sd_sd_di                          => CONNECTED_TO_sd_sd_di,                          --                            .sd_di
 			sd_sd_do                          => CONNECTED_TO_sd_sd_do,                          --                            .sd_do
-			sdram_clk_clk                     => CONNECTED_TO_sdram_clk_clk,                     --                   sdram_clk.clk
-			i2c_rst                           => CONNECTED_TO_i2c_rst,                           --                         i2c.rst
-			i2c_sda                           => CONNECTED_TO_i2c_sda,                           --                            .sda
-			i2c_sclk                          => CONNECTED_TO_i2c_sclk,                          --                            .sclk
-			i2c_beginbursttransfer            => CONNECTED_TO_i2c_beginbursttransfer             --                            .beginbursttransfer
+			sdram_clk_clk                     => CONNECTED_TO_sdram_clk_clk                      --                   sdram_clk.clk
 		);
 

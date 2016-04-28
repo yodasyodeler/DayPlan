@@ -1,65 +1,61 @@
 #include "image.h"
 
 uint8_t imageNum = 0;
-uint8_t infoNum = 0;
 uint32_t ImageAddress = 2304000; //Frame 7
+uint16_t monoChromeColor = BLACK;
 
-iImage* imageList[255];
-iInfo* infoList[255];
+node* imageList = NULL;
+node* infoList = NULL;
 
 uint16_t monochromeColor = BLACK;
 
-/*  findID
+/*  compID
  *    Helper Function for Finding an ID
- *    	On Success Returns Index
- *    	On Failure Returns -1
+ *    for imageList
+ *    Args: iImage , int ID
+ *    returns 0 when equivalent
  */
-int findID(uint32_t ID)
+int compID(void* data1, const void* data2)
 {
-	int i;
-	int comp = 0;
-
-	for (i=0; i < infoNum && !comp; ++i)
-		comp = ((imageList[i]->ID) == ID);
-
-	return (comp ? i-1 : -1);
+	return ( ((iImage*)(data1))->ID - (*(int*)(data2)) );
 }
 
-/*  findFrame
- *    Helper Function Next Image on Frame
- *    Can be reentrant with index arg
- *    	On Success Returns Index
- *    	On Failure Returns -1
+/*  compFrame
+ *    Helper Function for Finding a Frame
+ *    for imageList
+ *    Args: iImage , int Frame
+ *    returns 0 when equivalent
  */
-int findFrame(uint8_t frame, uint32_t index)
+int compFrame(void* data1, const void* data2)
 {
-	int i;
-	int comp = 0;
-
-	for (i=index+1; i < infoNum && !comp; ++i)
-		comp = (imageList[i]->frame == frame);
-
-	return (comp ? i-1 : -1);
+	return ((iImage*)(data1))->frame - (*(int*)(data2));
 }
 
-/*  findInfo
+/*  compName
  *    Helper Function for Finding if an Image
  *    has Already been Loaded into Memory
- *    	On Success Returns Index
- *    	On Failure Returns -1
+ *    for infoList
+ *    Args: iInfo , char* -> filename[8]
+ *    returns 0 when equivalent
  */
-int findInfo(const char fileName[8])
+int compName(void* data1, const void* data2)
 {
-	int i;
-	int comp = 0;
-
-	for (i=0; i < infoNum && !comp; ++i)
-		comp = (c_strcmp(infoList[i]->fileName, fileName) == 0);
-
-	return (comp ? i-1 : -1);
+	return c_strcmp( ((iInfo*)data1)->fileName, data2);
 }
 
+/*  deleteDummy
+ *    If extra delete is not needed
+ */
+void deleteDummy(void* data)
+{}
 
+/*  deleteWindow()
+ *    deletes Window
+ */
+void deleteWindow(void* data)
+{
+	free( ((iImage*)data)->w );
+}
 
 /*  createImage
  *    Registers an Image
@@ -71,14 +67,14 @@ int findInfo(const char fileName[8])
  */
 uint32_t createImage(const char fileName[8], const char fileExt[3], iInfo* info)
 {
-	int i;
 	iImage* imageC = NULL;
 	iInfo* infoC = NULL;
 	bitmapHeader header;
+	node* temp;
 
 	/* Didn't find Image */
-	if ( (i =findInfo(fileName)) == -1){
-		if (loadBitmap(fileName, fileExt,ImageAddress, &header))
+	if ( (temp = searchNode(infoList, fileName, compName)) == NULL){
+		if (loadBitmap(fileName, fileExt, ImageAddress, &header))
 			return 0;
 
 		infoC = malloc(sizeof(iInfo));
@@ -91,14 +87,15 @@ uint32_t createImage(const char fileName[8], const char fileExt[3], iInfo* info)
 		infoC->size = (header.size>>1);
 		infoC->height = header.height;
 		infoC->width = header.width;
+		infoC->padWidth = header.padWidth;
 		infoC->address = ImageAddress;
 		ImageAddress += infoC->size;
 
 		/* append new info */
-		infoList[infoNum++] = infoC;
+		addNode(&infoList, infoC);
 	}
 	else{
-		infoC = infoList[i];
+		infoC = (iInfo*)temp->_data;
 	}
 
 	imageC = malloc(sizeof(iImage));
@@ -112,9 +109,10 @@ uint32_t createImage(const char fileName[8], const char fileExt[3], iInfo* info)
 	imageC->layer = 0;
 	imageC->frame = 0;
 	imageC->scale = 0;
+	imageC->w = NULL;
 
-	imageList[imageNum++] = imageC;
-	imageC->ID = imageNum;
+	addNode(&imageList, imageC);
+	imageC->ID = ++imageNum;
 
 	if (info != NULL)
 		*info = *infoC;
@@ -123,22 +121,16 @@ uint32_t createImage(const char fileName[8], const char fileExt[3], iInfo* info)
 }
 uint32_t deleteImage(uint32_t ID)
 {
-	return 0;
+	return removeNode(&imageList, &ID, compID, deleteWindow);
 }
 
 void deleteAllImage()
 {
-
+	purgeNode(&imageList, deleteWindow);
 }
-void closeImage()
-{
-
-}
-
-
 
 /* displayImage
-  *    Displays a Image if ID matches
+ *    Displays a Image if ID matches
  *    an existing image In the List
  *    Takes in account
  *      scale, frame, x, y
@@ -159,12 +151,12 @@ uint32_t displayImage(uint32_t ID)
 	iImage* ptr = NULL;
 	uint16_t scaleX, scaleY;
 	uint8_t re = 0;
-	int index;
+	node* n = NULL;
 
-	if ((index = findID(ID)) == -1)
-			return index;
 
-	ptr = imageList[index];
+	if ( (n = searchNode(imageList, &ID, compID)) == NULL)
+			return -1;
+	ptr = (iImage*)(n->_data);
 
 	scaleX = (ptr->scale&0xF0)>>4;
 	scaleY = (ptr->scale&0x0F);
@@ -176,9 +168,9 @@ uint32_t displayImage(uint32_t ID)
 				re = displayMonochromeImage(ID);
 				break;
 			case 16:
-				if (ptr->scale == 0x33)
-					re = displayFastRGB16Image(ID);
-				else
+//				if (ptr->scale == 0x33)
+//					re = displayFastRGB16Image(ID);
+//				else
 					re = displayRGB16Image(ID);
 				break;
 			default:
@@ -190,8 +182,93 @@ uint32_t displayImage(uint32_t ID)
 
 }
 
+/* displayMonochromeImage
+ *    Displays a Image if ID matches
+ *    an existing image In the List
+ *    Must BE A Monochrome Image
+ *    Takes in Account
+ *      scale, frame, x, y, Window
+ *    Does Not Account For Layer
+ *    returns:
+ *              0: Success
+ *             -1: ID Not Found
+ */
 uint32_t displayMonochromeImage(uint32_t ID)
 {
+	int i, j, x, y,k;
+		iImage* ptr = NULL;
+		uint16_t pixel;
+
+		uint32_t fAddress;
+		uint32_t pixelOffset;
+
+		node* n;
+
+		uint8_t divX, divY;
+		uint8_t multX = 1;
+		uint8_t multY = 1;
+
+		uint32_t endX, endY;
+		uint32_t startX, startY;
+		uint16_t inX, inY;
+
+		if ((n = searchNode(imageList, &ID, compID)) == NULL)
+				return -1;
+
+		ptr = (iImage*)n->_data;
+
+		divX = (ptr->scale&0xF0)>>4;
+		divY = (ptr->scale&0x0F);
+
+
+
+		fAddress = (FRAMEADDRSIZE*(ptr->frame)) + xyLocation(ptr->x,ptr->y);
+
+
+		if (divX < 3)
+			divX = (4-divX);
+		else{
+			multX = divX - 2;
+			divX = 1;
+		}
+
+		if (divY < 3)
+			divY = (4-divY);
+		else{
+			multY = divY - 2;
+			divY = 1;
+		}
+
+		/* Setup Window */
+		if (ptr->w){
+			startX = ((ptr->w->x0)>>4);
+			startY = (ptr->w->y0);
+			endX = ((ptr->w->x1)>>4);
+			endY = (ptr->w->y1);
+		}
+		else{
+			startX = 0;
+			startY = 0;
+			endX = (ptr->info->width>>4);
+			endY = ptr->info->height;
+		}
+
+		inY = 0;
+		for (i=startY; i<endY; ++i){
+			inX = 0;
+			for (j=startX; j<endX; ++j){
+				pixelOffset = ((inY)*(ROWSIZE)) + fAddress;
+				pixel = IORD(NEW_SDRAM_CONTROLLER_0_BASE, ptr->info->address + j + (inY*(ptr->info->padWidth)) +  (startY*ptr->info->padWidth) ); //((ptr->info->width>>4)+1)
+				for (x=0; x<16; ++x){
+					if (((~pixel)<<x) & 0x8000)
+						IOWR(NEW_SDRAM_CONTROLLER_0_BASE, pixelOffset + inX,monoChromeColor);
+					++inX;
+				}
+
+			}
+			++inY;
+		}
+
 	return 0;
 }
 
@@ -208,8 +285,8 @@ uint32_t displayMonochromeImage(uint32_t ID)
  */
 uint32_t displayRGB16Image(uint32_t ID)
 {
-	int index;
-	int i, j;
+	int i = 0;
+	int j = 0;
 	int x, y;
 	iImage* ptr = NULL;
 	uint8_t divX, divY;
@@ -220,11 +297,14 @@ uint32_t displayRGB16Image(uint32_t ID)
 
 	uint32_t fAddress;
 	uint32_t pixelOffset;
+	uint32_t endX, endY;
+	uint32_t startX, startY;
 
-	if ((index = findID(ID)) == -1)
-		return index;
+	node* n;
+	if ((n = searchNode(imageList, &ID, compID)) == NULL)
+		return -1;
 
-	ptr = imageList[index];
+	ptr = (iImage*)n->_data;
 
 	divX = (ptr->scale&0xF0)>>4;
 	divY = (ptr->scale&0x0F);
@@ -247,16 +327,31 @@ uint32_t displayRGB16Image(uint32_t ID)
 		divY = 1;
 	}
 
+	/* Setup Window */
+	if (ptr->w){
+		startX = ptr->w->x0;
+		startY = ptr->w->y0;
+		endX = ptr->w->x1;
+		endY = ptr->w->y1;
+	}
+	else{
+		endX = ptr->info->width;
+		endY = ptr->info->height;
+	}
+
+
+
+
 	/* Iterate Pixels
 	 *   Outer Loops Traverses pixels in Ram
 	 *   Scale Affects Traversal if below 3
 	 */
-	for(i=0; i < ptr->info->height && inY < COLSIZE; i += divY){
+	for(i = startY; i < endY && inY < COLSIZE; i += divY){
 		//iterate this loop for increase in y
 		for(y=0; y<multY; ++y){
 			inX = ptr->x;
 			pixelOffset = ((inY)*(ROWSIZE)) + fAddress;
-			for(j=0; j < ptr->info->width && inX < ROWSIZE; j +=divX){
+			for(j = startX; j < endX && inX < ROWSIZE; j +=divX){
 				//Read Pixel
 				pixel = IORD(NEW_SDRAM_CONTROLLER_0_BASE, ptr->info->address + (i*ptr->info->width) + j);
 				//iterate this loop for increase in x
@@ -285,7 +380,6 @@ uint32_t displayRGB16Image(uint32_t ID)
  */
 uint32_t displayFastRGB16Image(uint32_t ID)
 {
-	int index;
 	int i, j;
 	iImage* ptr = NULL;
 	uint16_t pixel;
@@ -293,15 +387,16 @@ uint32_t displayFastRGB16Image(uint32_t ID)
 	uint32_t fAddress;
 	uint32_t pixelOffset;
 
-	if ((index = findID(ID)) == -1)
-		return index;
+	node* n;
+	if ((n = searchNode(imageList, &ID, compID)) == NULL)
+			return -1;
 
-	ptr = imageList[index];
+	ptr = (iImage*)n->_data;
 
 	fAddress = ((ptr->frame)*FRAMESIZE);
 
 	for(i=0; i < ptr->info->height; ++i){
-		pixelOffset = (((ptr->y+i)*ROWSIZE)+ptr->x) + fAddress;
+		pixelOffset = (((ptr->y+i)*ROWSIZE)+ ptr->x) + fAddress;
 		for(j=0; j < ptr->info->width; ++j){
 			pixel = IORD(NEW_SDRAM_CONTROLLER_0_BASE, ptr->info->address + (i*ptr->info->width) + j);
 			IOWR(NEW_SDRAM_CONTROLLER_0_BASE, pixelOffset + j, pixel);
@@ -330,14 +425,14 @@ uint32_t displayFont16Image(unsigned char c,FontCursor cursor)
 	int i, j, x, y;
 	uint8_t scaleX, scaleY;
 	uint16_t inX, inY;
-	int index;
 	iImage* ptr = NULL;
 	uint32_t pixelOffset;
 
-	if ((index = findID(cursor.ID)) == -1)
-			return index;
+	node* n;
+	if ((n = searchNode(imageList, &(cursor.ID), compID)) == NULL)
+			return -1;
 
-	ptr = imageList[index];
+	ptr = (iImage*)n->_data;
 	address = ptr->info->address + (((c-32)/(ptr->info->width>>4))*(ptr->info->width)) + ((c-32)%(ptr->info->width>>4));
 
 	inY = cursor.y;
@@ -384,15 +479,15 @@ uint32_t displayFont64Image(unsigned char c, FontCursor cursor)
 	int i, j, x, y;
 	uint8_t scaleX, scaleY;
 	uint16_t inX, inY;
-	int index;
 	iImage* ptr = NULL;
 	uint32_t pixelOffset;
 	uint64_t pixel;
 
-	if ((index = findID(cursor.ID)) == -1)
-			return index;
+	node* n;
+	if ((n = searchNode(imageList, &(cursor.ID), compID)) == NULL)
+			return -1;
 
-	ptr = imageList[index];
+	ptr = (iImage*)n->_data;
 	address = ptr->info->address + (((c-32)/(ptr->info->width>>6))*((ptr->info->width)<<2)) + (((c-32)%(ptr->info->width>>6))<<2);
 
 	inY = cursor.y;
@@ -429,54 +524,82 @@ void displayFrameImage(uint8_t frame)
 
 }
 
+void setMonoColorImage(uint16_t color)
+{
+	monoChromeColor = color;
+}
+
+
 uint32_t setLayerImage(uint32_t ID, uint8_t layer)
 {
-	int index;
-	if ((index = findID(ID)) == -1)
-			return index;
+	node* n;
+	if ((n = searchNode(imageList, &ID, compID)) == NULL)
+				return -1;
 
-	imageList[index]->layer = layer;
+	((iImage*)(n->_data))->layer = layer;
 
 	return 0;
 }
 uint32_t setScaleImage(uint32_t ID, uint8_t scaleX, uint8_t scaleY)
 {
-	int index;
-	if ((index = findID(ID)) == -1)
-			return index;
+	node* n;
+		if ((n = searchNode(imageList, &ID, compID)) == NULL)
+					return -1;
 
-	imageList[index]->scale = ((scaleX<<4)|scaleY);
+		((iImage*)(n->_data))->scale = (scaleX<<4)|scaleY;
 
-	return 0;
+		return 0;
 }
 uint32_t setFrameImage(uint32_t ID, uint8_t frame)
 {
-	int index;
-	if ((index = findID(ID)) == -1)
-			return index;
+	node* n;
+	if ((n = searchNode(imageList, &ID, compID)) == NULL)
+				return -1;
 
-	imageList[index]->frame = frame;
+	((iImage*)(n->_data))->frame = frame;
+
+	return 0;
+}
+
+uint32_t setWindowImage(uint32_t ID, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1)
+{
+	node* n;
+	window** ptr;
+	if ((n = searchNode(imageList, &ID, compID)) == NULL)
+		return -1;
+
+	ptr = &(((iImage*)(n->_data))->w);
+	if ( (*ptr) == NULL)
+	{
+		(*ptr) = malloc(sizeof(window));
+		if ((*ptr) == NULL)
+			return -2;
+	}
+	(*ptr)->x0 = x0;
+	(*ptr)->x1 = x1;
+	(*ptr)->y0 = y0;
+	(*ptr)->y1 = y1;
 
 	return 0;
 }
 uint32_t moveImage(uint32_t ID, uint16_t x, uint16_t y)
 {
-	int index;
-	if ((index = findID(ID)) == -1)
-			return index;
+	node* n;
+	if ((n = searchNode(imageList, &ID, compID)) == NULL)
+				return -1;
 
-	imageList[index]->x = x;
-	imageList[index]->y = y;
+	((iImage*)(n->_data))->x = x;
+	((iImage*)(n->_data))->y = y;
 
 	return 0;
 }
 
 uint32_t getInfoImage(uint32_t ID, const iInfo* info)
 {
-	int index;
-	if ((index = findID(ID)) == -1)
-			return index;
+	node* n;
+	if ((n = searchNode(imageList, &ID, compID)) == NULL)
+				return -1;
 
-	info = imageList[index]->info;
+	info = ((iImage*)(n->_data))->info;
 	return 0;
 }

@@ -35,7 +35,7 @@ module I2C_AVALON (
       else
           if (wr_ctrl)
               touch_event <= 0;
-          else if (i2c_touch)
+          else if (!i2c_touch)
               touch_event <= 1;
     end
 

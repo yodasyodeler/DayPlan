@@ -8,7 +8,7 @@
 void initTouchI2C();
 
 uint8_t readNumTouch();
-uint32_t readTouch(uint8_t touchPoint);
+uint32_t readTouchData(uint8_t touchPoint);
 void readTouchCord(uint8_t touchPoint, uint16_t* x, uint16_t* y);
 
 #endif

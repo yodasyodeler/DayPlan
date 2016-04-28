@@ -26,7 +26,7 @@ int loadBitmap( const char fileName[8], const char fileExt[3], const uint32_t ad
 
 	/* Account for padding, half words per line*/
 	bitmapRowLen = (((bInfo.pixelResolution*bInfo.width)+31)/32)*2;
-
+	bInfo.padWidth = bitmapRowLen;
 	if (bInfo.pixelResolution == 1){
 
 

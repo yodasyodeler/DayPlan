@@ -4,14 +4,25 @@
 #include "common.h"
 #include "ClockI2C.h"
 #include "FAT16SD.h"
+#include "drawLib.h"
+#include "image.h"
+#include "TouchI2C.h"
 
 #define DIGITSEGADDR (19584000)
 
+typedef enum _ClockState{
+	DISPLAYCLOCK=0,
+	EDITCLOCK
+
+}ClockState;
+
 //char fileName[8], char fileExt[3]
-int initClock();
-void displayClock(uint32_t frame);
+int initClock(uint32_t frame);
+void displayTimerClock(void);
+void displayEditClock(void);
 
-
+void pressEditButton(uint16_t x, uint16_t y);
+void editTouchClock(uint16_t x, uint16_t y);
 
 
 

@@ -1,0 +1,66 @@
+#define NULL 0
+#include "list.h"
+
+/*  add
+ *    Appends a node to the list
+ */
+void add(node** list, void** data)
+{
+	if ((*list) == NULL){
+		(*list) = (node*) malloc(sizeof(node));
+		(*list)->_data = data;
+		(*list)->_next = NULL;
+	}
+	else
+		add( (&(*list)->_next), data);
+}
+
+/*  remove
+ *    removes a node that _data meets the requirements of the compare function
+ */
+int remove(node** list, void** data, int (*comp)(void** data1, void** data2))
+{
+	int re = 1;
+	node* temp = NULL;
+
+	if ((*list) == NULL)
+		re = 0;
+	else if (comp(&((*list)->_data), data) == 0){
+
+		temp = (*list)->_next;
+
+		free( (*list)->_data );
+		free( (*list));
+
+		(*list) = temp;
+	}
+	else
+		re = remove( &((*list)->_next), data, comp);
+
+	return re;
+}
+
+/*  search
+ *    returns node that matches comp
+ */
+node search(node** list, void** data,int (*comp)(void** data1, void** data2))
+{
+	if ((comp( &((*list)->_data), data )) != 0)
+		return search( &((*list)->_data), data, comp);
+	else
+		return (*list);
+}
+
+/*  purge
+ *    deletes all nodes
+ */
+void purge(node** list)
+{
+	node* temp;
+	if (list != NULL){
+		temp = (*list)->_next;
+		free( (*list)->_data );
+		free( (*list));
+		purge(&(temp));
+	}
+}

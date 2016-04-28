@@ -27,4 +27,7 @@
 #define GREY 0x4A49
 #define DARKGREY 0x39E7
 
+extern void (*timerFunc)(void);
+extern void (*touchFunc)(uint16_t x, uint16_t y);
+
 #endif

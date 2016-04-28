@@ -1,0 +1,26 @@
+#ifndef CLOCK_H_
+#define CLOCK_H_
+
+#include "common.h"
+#include "ClockI2C.h"
+#include "FAT16SD.h"
+#include "drawLib.h"
+#include "image.h"
+
+#define DIGITSEGADDR (19584000)
+
+typedef enum _ClockState{
+	DISPLAYCLOCK,
+	EDITCLOCK
+
+}ClockState;
+
+//char fileName[8], char fileExt[3]
+int initClock(uint32_t frame);
+void displayTimerClock(void);
+void editTouchClock(void);
+
+
+
+
+#endif /* CLOCK_H_ */

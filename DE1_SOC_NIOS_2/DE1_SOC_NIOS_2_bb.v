@@ -1,6 +1,10 @@
 
 module DE1_SOC_NIOS_2 (
 	clk_clk,
+	i2c_rst,
+	i2c_sda,
+	i2c_sclk,
+	i2c_touch,
 	lcd_lcd_cs,
 	lcd_lcd_data,
 	lcd_lcd_dc,
@@ -20,13 +24,13 @@ module DE1_SOC_NIOS_2 (
 	sd_sd_clk,
 	sd_sd_di,
 	sd_sd_do,
-	sdram_clk_clk,
-	i2c_rst,
-	i2c_sda,
-	i2c_sclk,
-	i2c_beginbursttransfer);	
+	sdram_clk_clk);	
 
 	input		clk_clk;
+	output		i2c_rst;
+	inout		i2c_sda;
+	inout		i2c_sclk;
+	input		i2c_touch;
 	output		lcd_lcd_cs;
 	output	[23:0]	lcd_lcd_data;
 	output		lcd_lcd_dc;
@@ -47,8 +51,4 @@ module DE1_SOC_NIOS_2 (
 	output		sd_sd_di;
 	input		sd_sd_do;
 	output		sdram_clk_clk;
-	output		i2c_rst;
-	inout		i2c_sda;
-	inout		i2c_sclk;
-	input		i2c_beginbursttransfer;
 endmodule

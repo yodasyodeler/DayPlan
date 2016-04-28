@@ -1,0 +1,9 @@
+#ifndef LIST_H_
+#define LIST_H_
+
+typedef struct _node{
+	struct _node* _next;
+	void*  _data;
+}node;
+
+#endif

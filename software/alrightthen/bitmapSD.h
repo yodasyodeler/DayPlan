@@ -14,6 +14,7 @@ typedef struct _bitmapHeader{
 	int width;
 	int height;
 	int pixelResolution;
+	int padWidth;
 } bitmapHeader;
 
 int loadBitmap( const char fileName[8], const char fileExt[3], const uint32_t address, bitmapHeader* info);

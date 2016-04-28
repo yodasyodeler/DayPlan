@@ -156,6 +156,7 @@ C_SRCS += image.c
 C_SRCS += bitmapSD.c
 C_SRCS += SDCardSPI.c
 C_SRCS += fontWriterSD.c
+C_SRCS += c_list.c
 CXX_SRCS :=
 ASM_SRCS :=
 
