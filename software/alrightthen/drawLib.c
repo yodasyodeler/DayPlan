@@ -6,6 +6,7 @@ uint8_t isBusyScreenDraw()
 }
 void refreshScreen()
 {
+	while(isBusyScreenDraw());
 	IOWR(LCDFRAMEBUFFER_0_BASE, 0, 0);
 }
 

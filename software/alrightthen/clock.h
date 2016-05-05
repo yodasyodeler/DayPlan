@@ -7,8 +7,7 @@
 #include "drawLib.h"
 #include "image.h"
 #include "TouchI2C.h"
-
-#define DIGITSEGADDR (19584000)
+#include "fontWriterSD.h"
 
 typedef enum _ClockState{
 	DISPLAYCLOCK=0,
@@ -19,7 +18,7 @@ typedef enum _ClockState{
 //char fileName[8], char fileExt[3]
 int initClock(uint32_t frame);
 void displayTimerClock(void);
-void displayEditClock(void);
+void displayEditClock(uint8_t in);
 
 void pressEditButton(uint16_t x, uint16_t y);
 void editTouchClock(uint16_t x, uint16_t y);

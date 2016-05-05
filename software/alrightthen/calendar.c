@@ -8,7 +8,7 @@ static uint8_t daysInMonth[2][13] = {
 		{0,31,29,31,30,31,30,31,31,30,31,30,31}
 };
 
-char* weekdays[7] = { "Sunday",
+static char* weekdays[7] = { "Sunday",
 					  "Monday",
 					  "Tuesday",
 					  "Wednesday",
@@ -17,7 +17,7 @@ char* weekdays[7] = { "Sunday",
 					  "Saturday"
 };
 
-char* months[12] = { "January",
+static char* months[12] = { "January",
 					 "February",
 					 "March",
 					 "April",

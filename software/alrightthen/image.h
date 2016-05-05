@@ -106,7 +106,7 @@ uint32_t setFrameImage(uint32_t ID, uint8_t frame);
 uint32_t setWindowImage(uint32_t ID, uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1);
 uint32_t moveImage(uint32_t ID, uint16_t x, uint16_t y);
 
-uint32_t getInfoImage(uint32_t ID, const iInfo* info);
+iInfo* getInfoImage(uint32_t ID);
 
 
 #endif

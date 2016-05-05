@@ -2,20 +2,20 @@
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
 		<item value="false" key="isRegEx"/>
-		<item value="ALTERA_AVALON_TIMER_CONTROL_REG" key="selection"/>
+		<item value="frameDisplay" key="selection"/>
 		<item value="false" key="casesensitive"/>
 		<item value="false" key="incremental"/>
 		<item value="true" key="wrap"/>
 		<item value="false" key="wholeword"/>
 		<list key="findhistory">
+			<item value="frameDisplay"/>
+			<item value="getInfoImage"/>
+			<item value="fInfo"/>
+			<item value="monochromeColor"/>
 			<item value="ALTERA_AVALON_TIMER_CONTROL_REG"/>
 			<item value="IOWR"/>
 			<item value="220"/>
 			<item value="searchNode(i"/>
-			<item value="readNumTouch"/>
-			<item value="readTouchCord"/>
-			<item value="GREY"/>
-			<item value="cursorNew"/>
 		</list>
 		<list key="replacehistory">
 			<item value="210"/>
@@ -32,7 +32,7 @@
 		<item value="257" key="DIALOG_WIDTH"/>
 		<item value="1|Segoe UI|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI" key="DIALOG_FONT_NAME"/>
 		<item value="422" key="DIALOG_HEIGHT"/>
-		<item value="1256" key="DIALOG_X_ORIGIN"/>
-		<item value="244" key="DIALOG_Y_ORIGIN"/>
+		<item value="1023" key="DIALOG_X_ORIGIN"/>
+		<item value="197" key="DIALOG_Y_ORIGIN"/>
 	</section>
 </section>

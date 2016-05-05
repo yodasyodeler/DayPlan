@@ -4,7 +4,7 @@
  * Machine generated for CPU 'cpu' in SOPC Builder design 'DE1_SOC_NIOS_2'
  * SOPC Builder design path: ../../DE1_SOC_NIOS_2.sopcinfo
  *
- * Generated: Wed Apr 27 22:20:31 PDT 2016
+ * Generated: Sun May 01 17:18:58 PDT 2016
  */
 
 /*

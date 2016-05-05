@@ -35,36 +35,6 @@ int main()
 
 
 	flipFrame(0);
-	//drawFrame(DARKGREY, 0);
-
-//	printk("#!Hello World!\n");
-//	setScaleFont(2,2);
-//	printk("#!Hello World!\n");
-//	setScaleFont(1,2);
-//	printk("#!Hello World!\n");
-
-//	ID = createImage("PIP     ", "BMP", NULL);
-//
-//	setScaleImage(ID, 3, 3);
-//	setWindowImage(ID, 400, 0, 800, 240);
-//	moveImage(ID,0,240);
-//	displayImage(ID);
-//
-//	setScaleImage(ID, 3, 3);
-//	setWindowImage(ID, 0, 0, 400, 240);
-//	moveImage(ID,400,240);
-//	displayImage(ID);
-//
-//	setScaleImage(ID, 3, 3);
-//	setWindowImage(ID, 400, 240, 800, 480);
-//	moveImage(ID, 0, 0);
-//	displayImage(ID);
-//
-//	setScaleImage(ID, 3, 3);
-//	setWindowImage(ID, 0, 240, 400, 480);
-//	moveImage(ID, 400, 0);
-//	displayImage(ID);
-
 	for(;;);
 
 	return 0;
@@ -92,33 +62,32 @@ void initDrivers()
 	IOWR(I2CADDR, 1, 3);	//Start Timer and Interrupt Enable
 }
 
+/* it is the duty of the timerFunc to start the timer again if desired */
 void handle_timer_interrupt(void* isr_context)
 {
 	IOWR(TIMER_0_BASE, 0, 0 );	//Clear interrupt timer
-	//IOWR_ALTERA_AVALON_TIMER_STATUS(TIMER_0_BASE, 0);
-   // your isr code here
 
 	if (timerFunc != NULL)
 		timerFunc();
-
-	IOWR(TIMER_0_BASE, 1, 5 );	//Start Timer and Interrupt Enable
 }
+
+/* only detects press on release*/
 void handle_i2c_interrupt(void* isr_context)
 {
 	uint32_t temp;
 	uint16_t x,y;
-	IOWR(I2C_AVALON_0_BASE, 1, 3 );	//Clear interrupt timer
-	//readTouchCord(0, &x, &y);
+	IOWR(I2C_AVALON_0_BASE, 1, 3 );	//Clear interrupt
+
 	temp = readTouchData(0);
-	if (eatNextRead)
-		eatNextRead = 0;
-	else if ((temp & 0xC0000000) == 0x40000000){
+
+		if ((temp & 0xC0000000) == 0x40000000){
 		x = ((temp>>16) & 0x0FFF);
 		y = (temp & 0x0FFF);
+
 		if (touchFunc != NULL)
 			touchFunc(x,y);
-		eatNextRead = 1;
 	}
+	IOWR(I2C_AVALON_0_BASE, 1, 3 );	//Clear interrupt timer
 }
 
 

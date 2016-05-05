@@ -7,8 +7,6 @@ uint16_t monoChromeColor = BLACK;
 node* imageList = NULL;
 node* infoList = NULL;
 
-uint16_t monochromeColor = BLACK;
-
 /*  compID
  *    Helper Function for Finding an ID
  *    for imageList
@@ -419,7 +417,7 @@ uint32_t displayFastRGB16Image(uint32_t ID)
 uint32_t displayFont16Image(unsigned char c,FontCursor cursor)
 {
 	int address;
-	int fAddress = (FRAMEADDRSIZE*cursor.frame)+xyLocation(cursor.x,cursor.y);
+	int fAddress = (FRAMEADDRSIZE*cursor.frame)+ cursor.x;//xyLocation(cursor.x,cursor.y);
 	uint16_t kern = 0;
 	uint16_t row;
 	int i, j, x, y;
@@ -474,7 +472,7 @@ uint32_t displayFont16Image(unsigned char c,FontCursor cursor)
 uint32_t displayFont64Image(unsigned char c, FontCursor cursor)
 {
 	int address;
-	int fAddress = (FRAMEADDRSIZE*cursor.frame)+xyLocation(cursor.x,cursor.y);
+	int fAddress = (FRAMEADDRSIZE*cursor.frame)+cursor.x;//xyLocation(cursor.x,cursor.y);
 	uint16_t kern = 0;
 	int i, j, x, y;
 	uint8_t scaleX, scaleY;
@@ -594,12 +592,10 @@ uint32_t moveImage(uint32_t ID, uint16_t x, uint16_t y)
 	return 0;
 }
 
-uint32_t getInfoImage(uint32_t ID, const iInfo* info)
+iInfo* getInfoImage(uint32_t ID)
 {
 	node* n;
 	if ((n = searchNode(imageList, &ID, compID)) == NULL)
-				return -1;
-
-	info = ((iImage*)(n->_data))->info;
-	return 0;
+				return NULL;
+	return ((iImage*)(n->_data))->info;
 }

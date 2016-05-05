@@ -8,6 +8,7 @@
 #include "drawLib.h"
 #include "c_stl.h"
 #include "image.h"
+#include "c_list.h"
 
 #define CHARWIDTH (16)
 #define CHARHEIGHT (16)

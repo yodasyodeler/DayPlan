@@ -1,9 +1,8 @@
 #include "fontWriterSD.h"
 
-iInfo fInfo;
+
 FontCursor fontCursor;
-uint8_t  fontNum = 0;
-uint32_t fontIDs[5] = {0};
+iInfo* info;
 
 /* initFontMap
  *    Brief:
@@ -25,16 +24,7 @@ uint32_t fontIDs[5] = {0};
  */
 int initFontMap(char fileName[8], char fileExt[3])
 {
-	if (fontNum >= 5)
-		return -2;
-
-	if ((fontIDs[fontNum] = createImage(fileName,fileExt, &fInfo)) <= 0)
-		return fontIDs[fontNum];
-
-	fontCursor.ID = fontIDs[fontNum];
-	fontCursor.scale = 0x11;
-
-	return fontIDs[fontNum++];
+	return createImage(fileName,fileExt, NULL);
 }
 
 /*   moveCursorFont(uint16_t x, uint16_t y, uint8_t frame)
@@ -75,6 +65,7 @@ FontCursor getCursor()
  */
 void setCursor(FontCursor f)
 {
+	info = getInfoImage((f.ID));
 	fontCursor = f;
 }
 
@@ -86,6 +77,8 @@ void setCursor(FontCursor f)
  */
 uint16_t writeCharFont(unsigned char c)
 {
+	uint32_t re = -1;
+
 //	int address = FONTADDR +(((c-32)>>4) *(CHARHEIGHT*(fInfo.width>>4))) + ((((c-32)%16)*CHARWIDTH)>>4);
 //	int frameAddr = (FRAMEADDRSIZE*fontCursor.frame)+xyLocation(fontCursor.x,fontCursor.y);
 //	uint16_t kern = 0;
@@ -103,7 +96,17 @@ uint16_t writeCharFont(unsigned char c)
 //		}
 //	}
 //	return kern;
-	return displayFont64Image( c, fontCursor);
+
+	switch (((*info).width>>4)){
+	case 16:
+		re = displayFont16Image(c, fontCursor);
+		break;
+	case 64:
+		re = displayFont64Image( c, fontCursor);
+		break;
+	}
+
+	return re;
 }
 
 /* int writeStringFont(char* str, uint8_t isKern)
