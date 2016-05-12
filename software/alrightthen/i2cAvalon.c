@@ -35,8 +35,8 @@ void writeHalfI2C(uint8_t address, uint8_t regNum, uint16_t data)
 
 void writeWordI2C(uint8_t address, uint8_t regNum, uint32_t data)
 {
-	writeHalfI2C(address, regNum, data);
-	writeHalfI2C(address, regNum+2, (data>>16));
+	writeHalfI2C(address, regNum+2, (data&0xFFFF));
+	writeHalfI2C(address, regNum, (data>>16));
 }
 
 uint32_t readI2C(uint8_t address, uint8_t regNum)

@@ -99,6 +99,7 @@ uint32_t displayRGB16Image(uint32_t ID);
 uint32_t displayFastRGB16Image(uint32_t ID);
 
 void setMonoColorImage(uint16_t color);
+uint16_t getMonoColorImage();
 
 uint32_t setLayerImage(uint32_t ID, uint8_t layer);
 uint32_t setScaleImage(uint32_t ID, uint8_t scaleX, uint8_t scaleY);

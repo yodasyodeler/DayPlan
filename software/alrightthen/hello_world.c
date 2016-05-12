@@ -15,6 +15,7 @@
 #include "clock.h"
 
 
+
 void initDrivers();
 
 volatile int timeNew = 0;
@@ -32,7 +33,7 @@ int main()
 	//int ID;
 	printf("hello from main\n");
 	initDrivers();
-
+	//writeDate(0x4, 0x11, 0x05, 0x16);
 
 	flipFrame(0);
 	for(;;);
@@ -71,23 +72,48 @@ void handle_timer_interrupt(void* isr_context)
 		timerFunc();
 }
 
+
+
+
 /* only detects press on release*/
 void handle_i2c_interrupt(void* isr_context)
 {
+	int i;
 	uint32_t temp;
 	uint16_t x,y;
-	IOWR(I2C_AVALON_0_BASE, 1, 3 );	//Clear interrupt
+	IOWR(I2C_AVALON_0_BASE, 1, 3 );	//Clear interrupt timer
 
 	temp = readTouchData(0);
 
-		if ((temp & 0xC0000000) == 0x40000000){
+
+	//5 touch gesture
+	if ((readNumTouch()) > 4){
+		invertDisplay();
+		while (readNumTouch() >4)
+			for(i=0;i<5000;i++);
+	}
+	else if ((temp & 0xC0000000) == 0x40000000){
 		x = ((temp>>16) & 0x0FFF);
 		y = (temp & 0x0FFF);
 
 		if (touchFunc != NULL)
 			touchFunc(x,y);
+
+		while (readNumTouch() > 0)
+			for(i=0;i<5000;i++);
+	}
+	else
+	{
+		//continued press  code here
+		for(i=0;i<5000;i++);
 	}
 	IOWR(I2C_AVALON_0_BASE, 1, 3 );	//Clear interrupt timer
 }
+
+
+
+
+
+
 
 

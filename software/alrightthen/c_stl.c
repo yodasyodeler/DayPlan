@@ -51,6 +51,20 @@ int c_BCD(int num)
 	return temp;
 }
 
+int c_toBCD(int num)
+{
+	int temp = 0;
+	int shift = 0;
+
+	while(num != 0)
+	{
+		temp += (num%10)<<shift;
+		num = num/10;
+		shift += 4;
+	}
+	return temp;
+}
+
 int	c_strcmp(const char* s1, const char* s2)
 {
 

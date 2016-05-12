@@ -3,12 +3,12 @@
 static uint8_t Cday, Cmonth, Cweekday;
 static uint16_t Cyear;
 
-static uint8_t daysInMonth[2][13] = {
+uint8_t daysInMonth[2][13] = {
 		{0,31,28,31,30,31,30,31,31,30,31,30,31},
 		{0,31,29,31,30,31,30,31,31,30,31,30,31}
 };
 
-static char* weekdays[7] = { "Sunday",
+char* weekdays[7] = { "Sunday",
 					  "Monday",
 					  "Tuesday",
 					  "Wednesday",
@@ -17,7 +17,7 @@ static char* weekdays[7] = { "Sunday",
 					  "Saturday"
 };
 
-static char* months[12] = { "January",
+char* months[12] = { "January",
 					 "February",
 					 "March",
 					 "April",

@@ -1,0 +1,7 @@
+#ifndef DRAWAPPLICATION_H_
+#define DRAWAPPLICATION_H_
+#include "drawLib.h"
+
+int initWhitboard(uint32_t frame);
+
+#endif

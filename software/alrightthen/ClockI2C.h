@@ -15,4 +15,6 @@ void writeseconds(uint8_t seconds);
 void writeMinutes(uint8_t minutes);
 void writeHour(uint8_t hours);
 
+void writeDate(uint8_t weekday, uint8_t day, uint8_t month, uint8_t year);
+
 #endif /* CLOCKI2C_H_ */

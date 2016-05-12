@@ -1,5 +1,4 @@
-
-
+#include "DrawApplication.h"
 //void testTouch()
 //{
 //	uint32_t x,y;
@@ -136,3 +135,63 @@
 //	drawRectangleFill(WHITE, COLORPICKERSIZE*3, 0, (COLORPICKERSIZE)*4, 40, frame);
 //	drawRectangleFill(GREY, COLORPICKERSIZE*4, 0, (COLORPICKERSIZE)*5, 40, frame);
 //}
+
+/* display variables */
+static uint32_t wFrame;
+
+/* draw variables */
+static uint8_t wBrush = 0;
+static uint16_t wColor = RED;
+
+/* operation variables */
+static uint8_t inToolTray = 0;
+
+
+int initWhiteboard(uint32_t frame)
+{
+	wFrame = frame;
+
+	drawFrame(WHITE,wFrame);
+	drawRectangleFill(GREY, 10, 10, 50, 50, wFrame);
+
+
+
+
+	return 0;
+}
+
+
+void onHoldWhiteboard(uint16_t x, uint16_t y)
+{
+	//extra restrictions can go here
+	if (x > 10 && y > 10 && x < 790 && y < 470)
+	{
+		switch(wBrush)
+		{
+			case 0:
+				drawCircleFill(wColor, x, y, 20,wFrame);
+				break;
+			case 1:
+				drawRectangleFill(wColor, x-10, y-10, x+10, y+10, wFrame);
+		}
+		refreshScreen();
+	}
+}
+
+void onReleaseWhiteboard(uint16_t x, uint16_t y)
+{
+	if (!inToolTray &&x<50 && y <50)
+	{
+		flipFrame(wFrame+1);
+		inToolTray = 1;
+	}
+	else
+	{
+		//tool tray things
+	}
+}
+
+void onAllFingerPress(uint16_t x, uint16_t y)
+{
+
+}

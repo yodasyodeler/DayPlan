@@ -41,5 +41,5 @@ void writeHour(uint8_t hours)
 
 void writeDate(uint8_t weekday, uint8_t day, uint8_t month, uint8_t year)
 {
-	writeWordI2C(CLOCKADDR, 4, ((weekday<<24) | (day<<16) | (month<<8) | (year)) );
+	writeWordI2C(CLOCKADDR, 3, ((weekday<<24) | (day<<16) | (month<<8) | (year)) );
 }
