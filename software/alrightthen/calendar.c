@@ -3,6 +3,8 @@
 static uint8_t Cday, Cmonth, Cweekday;
 static uint16_t Cyear;
 
+
+
 uint8_t daysInMonth[2][13] = {
 		{0,31,28,31,30,31,30,31,31,30,31,30,31},
 		{0,31,29,31,30,31,30,31,31,30,31,30,31}
@@ -30,6 +32,40 @@ char* months[12] = { "January",
 					 "November",
 					 "December"
 };
+
+static uint32_t calFrame;
+static int yearOffset=0, monthOffset=0;
+
+static FontCursor cursor;
+static uint32_t nextARRWID[2];
+
+int initCal(uint32_t frame)
+{
+	calFrame = frame;
+	drawFrame(GREY, calFrame);
+
+	cursor.frame = calFrame;
+	if ((cursor.ID = initFontMap("FONT    ", "BMP")) <= 0)
+				while(1);
+	cursor.scale = 0x11;
+	cursor.x = 290;
+	cursor.y = 20;
+	cursor.color = BLACK;
+
+	nextARRWID[0] = createImage("NEXTARW ", "BMP", NULL);
+	setScaleImage(nextARRWID[0], 3, 3);
+	setWindowImage(nextARRWID[0], 0, 0, 32, 240);
+	moveImage(nextARRWID[0], 10, 120);
+	setFrameImage(nextARRWID[0], calFrame);
+
+	nextARRWID[1] = createImage("NEXTARW ", "BMP", NULL);
+	setScaleImage(nextARRWID[1], 3, 3);
+	setWindowImage(nextARRWID[1], 32, 0, 64, 240);
+	moveImage(nextARRWID[1], 750, 120);
+	setFrameImage(nextARRWID[1], calFrame);
+
+	return 0;
+}
 
 /* isLeapYear
  *   leap year is divisible by 4 and not by 100
@@ -104,11 +140,11 @@ int displayCal(uint8_t month, uint16_t year, uint8_t frame)
 	uint16_t y;
 	int i;
 	uint8_t temp;
-	uint16_t whiteColors[2] = { WHITE, OFFWHITE };
+	uint16_t whiteColors[2] = { BLUE, RED };
 	uint16_t greyColors[2] = {LIGHTGREY, GREY };
 
 	//FontCursor cursorOld;
-	FontCursor cursor = {290, 20, frame, WHITE};
+
 
 	/* Check month is valid */
 	if (month < 1 || month > 12)
@@ -118,12 +154,18 @@ int displayCal(uint8_t month, uint16_t year, uint8_t frame)
 	if (year < 1753 || year > 9999)
 		return -2;
 
-	getCurrentDate(&Cweekday, &Cday, &Cmonth, &Cyear );
+	drawRectangleFill(GREY,290,20,600,36, calFrame);
+
 	weekday = dayInWeek(1, month, year) - 1;
 
 	/* Display Header */
+	cursor.x = 290;
+	cursor.y = 20;
 	setCursor(cursor);
 	printk("%s\t-\t%d", months[month-1], year);
+
+//	//debug
+//	refreshScreen();
 
 	cursor.y = 60-16;
 	cursor.x = 22;
@@ -135,6 +177,8 @@ int displayCal(uint8_t month, uint16_t year, uint8_t frame)
 		setCursor(cursor);
 	}
 
+
+
 	/*draw Calendar */
 	y = 60;
 	x = 22;
@@ -144,7 +188,8 @@ int displayCal(uint8_t month, uint16_t year, uint8_t frame)
 	setCursor(cursor);
 	//drawRectangleFill(WHITE, x, y, x+108, y+66, 0);
 
-
+//	//debug
+//	refreshScreen();
 
 	/* display days before */
 	temp = daysInMonth[leapYear][month-1];
@@ -155,6 +200,9 @@ int displayCal(uint8_t month, uint16_t year, uint8_t frame)
 		cursor.x += 108;
 		setCursor(cursor);
 	}
+
+//	//debug
+//	refreshScreen();
 
 	/* display days after */
 	temp = daysInMonth[leapYear][month];
@@ -171,6 +219,10 @@ int displayCal(uint8_t month, uint16_t year, uint8_t frame)
 			drawRectangleFill(greyColors[((i+weekday-1)%7)&1], x, y, x+108, y+66, frame);
 			printk( "%d", i-temp);
 		}
+
+//		//debug
+//		refreshScreen();
+
 		x+=108;
 		cursor.x += 108;
 
@@ -183,4 +235,71 @@ int displayCal(uint8_t month, uint16_t year, uint8_t frame)
 		setCursor(cursor);
 	}
 	return 0;
+}
+
+
+// void (*timerFunc)(void)
+//void touchFivePointFuncCal(void);
+//void touchContinuousCal (uint16_t x, uint16_t y)
+void touchReleaseCal(uint16_t x, uint16_t y)
+{
+	if (x<90 && y<360 && y>120){
+
+		//change operation Whiteboard left
+		swapToClock();
+
+	}
+	else if (y<60 ){
+		getCurrentDate(&Cweekday, &Cday, &Cmonth, &Cyear );
+
+		if ( ((--monthOffset)+Cmonth) == 0){
+			monthOffset = 0;
+			yearOffset -= 1;
+		}
+
+		displayCal(Cmonth+monthOffset, Cyear+yearOffset, calFrame);
+
+		displayImage(nextARRWID[0]);
+		displayImage(nextARRWID[1]);
+
+		refreshScreen();
+	}
+	else if (x>710 && y<360 && y>120){
+		//change operation Calendar right
+		swapToWhiteboard();
+	}
+	else if (y>420){
+		getCurrentDate(&Cweekday, &Cday, &Cmonth, &Cyear );
+
+		if (((++monthOffset)+(Cmonth)) == 13){
+			monthOffset = 0;
+			yearOffset += 1;
+		}
+
+		displayCal(Cmonth+monthOffset, Cyear+yearOffset,calFrame);
+
+		displayImage(nextARRWID[0]);
+		displayImage(nextARRWID[1]);
+
+		refreshScreen();
+	}
+}
+
+void swapToCal(void)
+{
+	int i;
+	flipFrame(calFrame);
+	getCurrentDate(&Cweekday, &Cday, &Cmonth, &Cyear );
+	displayCal(Cmonth+monthOffset, Cyear+yearOffset, calFrame);
+
+	timerFunc = NULL;
+	touchFivePointFunc = NULL;
+	touchReleaseFunc = touchReleaseCal;
+	touchContinuousFunc = NULL;
+	for (i=0; i<5000;++i);
+
+	displayImage(nextARRWID[0]);
+	displayImage(nextARRWID[1]);
+
+	refreshScreen();
 }

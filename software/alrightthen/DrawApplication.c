@@ -139,27 +139,57 @@
 /* display variables */
 static uint32_t wFrame;
 
+/* Image IDs */
+static uint32_t nextARRWID[2];
+
 /* draw variables */
 static uint8_t wBrush = 0;
 static uint16_t wColor = RED;
 
 /* operation variables */
-static uint8_t inToolTray = 0;
+static DrawState dState = DRAWING;
 
 
 int initWhiteboard(uint32_t frame)
 {
 	wFrame = frame;
+	// set-up frame one
+	drawFrame(OFFWHITE,wFrame);
+	//drawRectangleFill(GREY, 10, 10, 50, 50, wFrame);
+	nextARRWID[0] = createImage("NEXTARW ", "BMP", NULL);
+	setScaleImage(nextARRWID[0], 3, 3);
+	setWindowImage(nextARRWID[0], 0, 0, 32, 240);
+	moveImage(nextARRWID[0], 10, 120);
+	setFrameImage(nextARRWID[0], wFrame);
 
-	drawFrame(WHITE,wFrame);
-	drawRectangleFill(GREY, 10, 10, 50, 50, wFrame);
+	nextARRWID[1] = createImage("NEXTARW ", "BMP", NULL);
+	setScaleImage(nextARRWID[1], 3, 3);
+	setWindowImage(nextARRWID[1], 32, 0, 64, 240);
+	moveImage(nextARRWID[1], 750, 120);
+	setFrameImage(nextARRWID[1], wFrame);
+
+	displayImage(nextARRWID[0]);
+	displayImage(nextARRWID[1]);
 
 
-
+	dState = DRAWING;
 
 	return 0;
 }
 
+void swapToWhiteboard()
+{
+	int i;
+	flipFrame(wFrame);
+	timerFunc = NULL;
+	touchContinuousFunc = onHoldWhiteboard;
+	touchReleaseFunc = onReleaseWhiteboard;
+	touchFivePointFunc = onAllFingerPressWhiteboard;
+
+	for(i=0;i<5000;++i);
+
+	refreshScreen();
+}
 
 void onHoldWhiteboard(uint16_t x, uint16_t y)
 {
@@ -169,29 +199,48 @@ void onHoldWhiteboard(uint16_t x, uint16_t y)
 		switch(wBrush)
 		{
 			case 0:
-				drawCircleFill(wColor, x, y, 20,wFrame);
+				drawCircleFill(wColor, x, y, 15, wFrame);
 				break;
 			case 1:
 				drawRectangleFill(wColor, x-10, y-10, x+10, y+10, wFrame);
 		}
-		refreshScreen();
 	}
+	refreshScreen();
 }
 
 void onReleaseWhiteboard(uint16_t x, uint16_t y)
 {
-	if (!inToolTray &&x<50 && y <50)
-	{
-		flipFrame(wFrame+1);
-		inToolTray = 1;
+	int i;
+	displayImage(nextARRWID[0]);
+	displayImage(nextARRWID[1]);
+
+
+	if (x<90){
+		if (y<360 && y>120){
+
+			//change operation Calendar left
+			swapToCal();
+
+		}
 	}
-	else
-	{
-		//tool tray things
+	else if (x>710){
+		if (y<360 && y>120){
+				//change operation Clock right
+			swapToClock();
+		}
 	}
+
+	refreshScreen();
 }
 
-void onAllFingerPress(uint16_t x, uint16_t y)
+void onAllFingerPressWhiteboard(void)
 {
 
+	drawFrame(OFFWHITE,wFrame);
+
+	displayImage(nextARRWID[0]);
+	displayImage(nextARRWID[1]);
+
+
+//	refreshScreen();
 }

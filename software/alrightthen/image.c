@@ -1,7 +1,7 @@
 #include "image.h"
 
 uint8_t imageNum = 0;
-uint32_t ImageAddress = 2304000; //Frame 7
+uint32_t ImageAddress = 6912000; //Frame 9, zero index in calculation
 uint16_t monoChromeColor = BLACK;
 
 node* imageList = NULL;

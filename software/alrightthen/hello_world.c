@@ -13,6 +13,7 @@
 #include "priv/alt_legacy_irq.h"
 #include "image.h"
 #include "clock.h"
+#include "DrawApplication.h"
 
 
 
@@ -26,7 +27,9 @@ void handle_i2c_interrupt(void* isr_context);
 
 volatile uint8_t eatNextRead = 0;
 void (*timerFunc)(void) = NULL;
-void (*touchFunc)(uint16_t x, uint16_t y) = NULL;
+void (*touchReleaseFunc)(uint16_t x, uint16_t y) = NULL;
+void (*touchFivePointFunc)(void) = NULL;
+void (*touchContinuousFunc)(uint16_t x, uint16_t y) = NULL;
 
 int main()
 {
@@ -50,8 +53,10 @@ void initDrivers()
 	if (initFontMap("NEWROMAN", "BMP") <= 0)
 		while(1);
 	initClock(0);
-	timerFunc = displayTimerClock;
-	touchFunc = pressEditButton;
+	initWhiteboard(3);
+	initCal(5);
+//	timerFunc = displayTimerClock;
+//	touchReleaseFunc = pressEditButton;
 	  // register the timer irq to be serviced by handle_timer_interrupt() function
 	alt_irq_register(TIMER_0_IRQ, 0, handle_timer_interrupt);
 	alt_irq_register(I2C_AVALON_0_IRQ, 0, handle_i2c_interrupt);
@@ -86,27 +91,45 @@ void handle_i2c_interrupt(void* isr_context)
 	temp = readTouchData(0);
 
 
-	//5 touch gesture
-	if ((readNumTouch()) > 4){
-		invertDisplay();
-		while (readNumTouch() >4)
-			for(i=0;i<5000;i++);
-	}
-	else if ((temp & 0xC0000000) == 0x40000000){
-		x = ((temp>>16) & 0x0FFF);
-		y = (temp & 0x0FFF);
+		//5 Touch Gesture
+//		if ((readNumTouch()) > 4){
+//			//invertDisplay();
+//			if (touchFivePointFunc != NULL)
+//				touchFivePointFunc();
+//			while (readNumTouch() > 0)
+//				for(i=0;i<5000;i++);
+//		}
+	//	//Release Press
+	//	else if ((temp & 0xC0000000) == 0x40000000){
+	//
+	//		if (touchReleaseFunc != NULL){
+	//			x = ((temp>>16) & 0x0FFF);
+	//			y = (temp & 0x0FFF);
+	//			touchReleaseFunc(x,y);
+	//		}
+	//
+	//	}
+		//Continued Press
+//		else{
 
-		if (touchFunc != NULL)
-			touchFunc(x,y);
+		do{
+			x = ((temp>>16) & 0x0FFF);
+			y = (temp & 0x0FFF);
 
-		while (readNumTouch() > 0)
-			for(i=0;i<5000;i++);
-	}
-	else
-	{
-		//continued press  code here
-		for(i=0;i<5000;i++);
-	}
+			if (touchContinuousFunc != NULL){
+
+				touchContinuousFunc(x,y);
+			}
+
+			temp = readTouchData(0);
+			for(i=0;i<2000;i++);
+			x = ((temp>>16) & 0x0FFF);
+			y = (temp & 0x0FFF);
+		}while ((readNumTouch()) > 0);
+		touchReleaseFunc(x,y);
+
+
+	for(i=0;i<50000;i++);
 	IOWR(I2C_AVALON_0_BASE, 1, 3 );	//Clear interrupt timer
 }
 

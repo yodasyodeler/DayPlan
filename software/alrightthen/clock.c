@@ -108,13 +108,13 @@ int initClock(uint32_t frame)
 	setScaleImage(nextARRWID[0], 3, 3);
 	setWindowImage(nextARRWID[0], 0, 0, 32, 240);
 	moveImage(nextARRWID[0], 10, 120);
-	setFrameImage(nextARRWID[i], displayFrame);
+	setFrameImage(nextARRWID[0], displayFrame);
 
 	nextARRWID[1] = createImage("NEXTARW ", "BMP", NULL);
 	setScaleImage(nextARRWID[1], 3, 3);
 	setWindowImage(nextARRWID[1], 32, 0, 64, 240);
 	moveImage(nextARRWID[1], 750, 120);
-	setFrameImage(nextARRWID[i], displayFrame);
+	setFrameImage(nextARRWID[1], displayFrame);
 
 	displayInterface(1);
 
@@ -192,6 +192,14 @@ int initClock(uint32_t frame)
 //	moveCursorFont(710, 430, 3);
 //	printk("Date");
 
+	cState = DISPLAYCLOCK;
+
+	touchFivePointFunc = invertDisplay;
+	touchReleaseFunc = pressEditButton;
+	touchContinuousFunc = NULL;
+
+	timerFunc = displayTimerClock;
+
 	return 0;
 }
 
@@ -262,24 +270,37 @@ void displayTimerClock(void)
 }
 void pressEditButton(uint16_t x, uint16_t y)
 {
+
 	if (invertInterface==1){
-		// if 		next buttons
-		// else if
-		// else
-		if (y>420 && x<90 ){
-			cState = EDITCLOCK;
-			flipFrame(displayFrame+1);
-			touchFunc = editTouchClock;
+		if (x<90){
+			if (y<360 && y>120){
+
+				//change operation Whiteboard left
+				swapToWhiteboard();
+
+			}
+			else if (y>420 ){
+				cState = EDITCLOCK;
+				flipFrame(displayFrame+1);
+				touchReleaseFunc = editTouchClock;
+				refreshScreen();
+			}
 		}
-		else if (y>420 && x>710){
-			cState = EDITDATE;
-			getCurrentDate(&Cweekday, &Cday, &Cmonth, &Cyearfull);
-			Cweekday--;
-			displayEditDate(0);
-			displayEditDate(1);
-			flipFrame(displayFrame+2);
-			touchFunc = editTouchDate;
-			refreshScreen();
+		else if (x>710){
+			if (y<360 && y>120){
+				//change operation Calendar right
+				swapToCal();
+			}
+			else if (y>420){
+				cState = EDITDATE;
+				getCurrentDate(&Cweekday, &Cday, &Cmonth, &Cyearfull);
+				Cweekday--;
+				displayEditDate(0);
+				displayEditDate(1);
+				flipFrame(displayFrame+2);
+				touchReleaseFunc = editTouchDate;
+				refreshScreen();
+			}
 		}
 	}
 }
@@ -322,7 +343,6 @@ void displayEditClock(uint8_t in, uint8_t show)
 void editTouchClock(uint16_t x, uint16_t y)
 {
 	uint8_t changemade = 0;
-	int i;
 
 	if (y>0 && y < 128){
 
@@ -393,20 +413,20 @@ void editTouchClock(uint16_t x, uint16_t y)
 		cState = DISPLAYCLOCK;
 		writeTime( seconds, minutes, hours);
 		flipFrame(displayFrame);
-		touchFunc = pressEditButton;
-		for(i=40000; i>0; --i);
+		touchReleaseFunc = pressEditButton;
+		//for(i=40000; i>0; --i);
 
 		IOWR(TIMER_0_BASE, 1, 5 );	//Start Timer and Interrupt Enable
 	}
 	else if (y>420 && x>710){
 		cState = EDITDATE;
 		writeTime( seconds, minutes, hours);
-
+		getCurrentDate(&Cweekday, &Cday, &Cmonth, &Cyearfull);
 		Cweekday--;
 		displayEditDate(0);
 		displayEditDate(1);
 		flipFrame(displayFrame+2);
-		touchFunc = editTouchDate;
+		touchReleaseFunc = editTouchDate;
 		refreshScreen();
 	}
 }
@@ -484,7 +504,7 @@ void editTouchDate(uint16_t x, uint16_t y)
 		displayDate(0);
 		displayDate(1);
 		displayTimerClock();
-		touchFunc = editTouchClock;
+		touchReleaseFunc = editTouchClock;
 	}
 	else if (y>420 && x>710){
 		cState = DISPLAYCLOCK;
@@ -493,7 +513,7 @@ void editTouchDate(uint16_t x, uint16_t y)
 		flipFrame(displayFrame);
 		displayDate(0);
 		displayDate(1);
-		touchFunc = pressEditButton;
+		touchReleaseFunc = pressEditButton;
 		IOWR(TIMER_0_BASE, 1, 5 );	//Start Timer and Interrupt Enable
 	}
 }
@@ -501,7 +521,15 @@ void editTouchDate(uint16_t x, uint16_t y)
 
 
 
-
+void swapToClock(void)
+{
+	timerFunc = displayTimerClock;
+	touchFivePointFunc = invertDisplay;
+	touchReleaseFunc = pressEditButton;
+	touchContinuousFunc = NULL;
+	flipFrame(displayFrame);
+	refreshScreen();
+}
 
 
 

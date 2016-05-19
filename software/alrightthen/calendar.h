@@ -12,6 +12,7 @@ extern char* months[12];
 
 int isLeapYear(uint16_t year);
 
+int initCal(uint32_t frame);
 void getCurrentDate(uint8_t* weekday, uint8_t* day, uint8_t* month, uint16_t* year);
 int displayCal(uint8_t month, uint16_t year, uint8_t frame);
 
