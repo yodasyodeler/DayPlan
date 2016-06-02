@@ -215,7 +215,7 @@ void displayTimerClock(void)
 		}
 
 		readTime(&seconds, &minutes, &hours);
-		hours &= 0x3F;
+		hours &= 0x1F;
 
 		setWindowImage(clockID[0], winX[hours>>4], winY[hours>>4], winX[hours>>4]+112, winY[hours>>4]+210);
 		displayImage(clockID[0]);

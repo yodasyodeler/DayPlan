@@ -23,7 +23,7 @@
 #define YELLOW (0xFFE0)
 #define SKYBLUE (0x07FF)
 #define BLACK (0x0000)
-#define WHITE (0xB5D6)
+#define WHITE (0xBDF7)
 #define OFFWHITE (0xEF5D)
 #define LIGHTGREY (0x8C71)
 #define GREY (0x4A49)

@@ -215,7 +215,7 @@ void displayTimerClock(void)
 		}
 
 		readTime(&seconds, &minutes, &hours);
-		hours &= 0x3F;
+		hours &= 0x1F;
 
 		setWindowImage(clockID[0], winX[hours>>4], winY[hours>>4], winX[hours>>4]+112, winY[hours>>4]+210);
 		displayImage(clockID[0]);
@@ -244,7 +244,7 @@ void displayTimerClock(void)
 				}
 
 				readTime(&seconds, &minutes, &hours);
-				hours &= 0x3F;
+				hours &= 0x1F;
 
 				setWindowImage(editClockID[0], winX[hours>>4], winY[hours>>4], winX[hours>>4]+112, winY[hours>>4]+210);
 				displayImage(editClockID[0]);
@@ -400,12 +400,8 @@ void editTouchClock(uint16_t x, uint16_t y)
 		}
 	}
 
-	if ((hours&0x3F) == 0)
+	if ((hours&0x1F) == 0)
 		hours = 0x01;
-	if (hours > 0x24)
-		hours = 0x20;
-
-
 	if (changemade){
 		displayEditClock(changemade-1, 1);
 		refreshScreen();

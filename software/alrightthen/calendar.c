@@ -140,7 +140,7 @@ int displayCal(uint8_t month, uint16_t year, uint8_t frame)
 	uint16_t y;
 	int i;
 	uint8_t temp;
-	uint16_t whiteColors[2] = { BLUE, RED };
+	uint16_t whiteColors[2] = { WHITE, OFFWHITE };
 	uint16_t greyColors[2] = {LIGHTGREY, GREY };
 
 	//FontCursor cursorOld;
