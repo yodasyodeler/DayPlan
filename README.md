@@ -1,26 +1,44 @@
 # DayPlan
-Project written in System Verilog and C to drive a Clock, Calendar, and Drawing applications to a TFT touch screen.
+Library for driving a 7" TFT touch screen and other peripherals.
 
-The purpose of DayPlan is to manage one's life through a digital screen. This stationary device will use input through 
-the touch screen to create events, take notes, and set reminders. DayPlan will act as a robust calendar for an individual 
-or family.
 
-DayPlan uses a the NIOS II softprocessor to handle all applications. All peripherals interface through system verilog and 
-then connect to the NIOS II using the Qsys interconnect. 
+DayPlan provides communication to SD card(FAT16), RTC, touch screen, i2c, and parellel interface of the tft screen. 
 
-Dayplans peripherals include:
+DayPlan uses a the NIOS II softprocessor to handle all applications. All peripherals communicate through custom system verilog modules 
+connected to the NIOS II by the Qsys interconnect. 
 
-  -Real Time Clock (ds3231)
-  
-  -7inch TFT Touch Screen (http://www.buydisplay.com/default/7-tft-screen-touch-lcd-display-module-w-ssd1963-controller-board-mcu)
-  
-    -Display (SSD1963)
+
+## Font system
+Dayplan's Font library uses a Font Bitmap to interpret strings to the screen. 
+```C
+printk("Time: %x:%x:%x %s", 0x1F&hours[invert], minutes[invert], seconds[invert], AMPM[periodOfTime]);
+```
+printk (print kerned) is a custom function that is modeled after C's printf to display kerned text to the screen.   
+printg (print grid) is an alternative that will maintian equal spacing for all characters.
+
+Below are the supported escape variables '%':   
+
+    '%': Display char '%'   
     
-    -Touch (FT5206)
+    'd': Display arg as a Decimal Int   
     
-    -MicroSDCard
+    'x': Display arg as a lowercase Hex int   
     
+    'X': Display arg as a uppercase Hex int   
+    
+    'c': Display arg as a char   
+    
+    's': Display arg as a string  
 
-The system uses the de1-SoC on board sdram and a 2GB FAT16 micro SDcard for memory.
-
-DayPlan is in development for my Senior Computer Engineering Project.
+## Dayplan tested peripherals   
+    Real Time Clock (ds3231)   
+   
+    7inch TFT Touch Screen (http://www.buydisplay.com/default/7-tft-screen-touch-lcd-display-module-w-ssd1963-controller-board-mcu)   
+   
+    Display (SSD1963)   
+   
+    Touch (FT5206)   
+   
+    MicroSDCard   
+   
+Terasic's de1-SoC board was used for testing libraries.
